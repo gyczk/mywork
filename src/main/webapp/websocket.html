@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+	var ws = new WebSocket("ws://localhost:8081/mywork/myHandler");
+	
+	ws.onopen = function(evt) { 
+	  console.log("Connection open ..."); 
+	  ws.send("Hello WebSockets!");
+	};
+	
+	ws.onmessage = function(evt) {
+	  console.log( "Received Message: " + evt.data);
+	  alert(evt.data);
+	  /* ws.close(); */
+	};
+	
+	ws.onclose = function(evt) {
+	  console.log("Connection closed.");
+	};      
+</script>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Login Form</title>
+
+
+
+<link rel="stylesheet" href="css/loginstyle.css" th:href="@{/css/loginstyle.css}">
+<script src="../../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+
+
+</head>
+
+<body>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<title>Login</title>
+
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+
+</head>
+<div id="login">
+	<form name='form-login'  method="post" id="form">
+		<span class="fontawesome-user"></span> 
+		<input type="text" id="user" placeholder="Username" name="username">
+		<span class="fontawesome-lock"></span> 
+		<input type="password" id="pass" placeholder="Password" name="password">
+		<!-- <input type="checkbox" id="remebers">记住用户名 -->
+		<input type="button" value="Login" onclick="login()">
+	</form>
+	<span id="loginInfo" th:if="${error}" th:text="${error}"></span>
+</div>
+
+
+
+	</body>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var username = getCookie("user");
+		if(username!=''){
+			$("#user").val(username);
+		}
+		
+	})
+	function login(){
+		var username = $("#user").val();
+		if(username){
+			setCookie("user", username,7)
+		}else{
+			delCookie("user");
+		}
+		/* $.ajax({
+			type: 'POST',
+			url:"login.action",
+			data:$("#form").serialize(),
+			success:function(data){
+				if(data.error){
+					
+				}
+			}
+		}) */
+		var form = $("#form");
+		form.attr('action',"login")
+		$("#form").submit();
+	}
+	
+	
+	
+	//写cookies
+	function setCookie(name,value,day){
+	    var date = new Date();
+	    date.setDate(date.getDate() + day);
+	    document.cookie = name + '=' + value + ';expires='+ date;
+  }
+	//读取cookies 
+	function getCookie(name){
+	    var reg = RegExp(name+'=([^;]+)');
+	    var arr = document.cookie.match(reg);
+	    if(arr){
+	      return arr[1];
+	    }else{
+	      return '';
+	    }
+  }
+	//删除cookies 
+	function delCookie(name){
+    	setCookie(name,null,-1);
+  }
+	
+</script>
+</html>
