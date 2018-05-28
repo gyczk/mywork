@@ -99,8 +99,9 @@ public class CustomerAction {
 	@RequiresPermissions("customer:findAll")
 	@RequestMapping("/findAll")
 	@ResponseBody
-	public List findAll(String id){
+	public List findAll(String id) throws IOException{
 		List<Customer> list = customerService.findAllCustomer();
+		myHandler.sendMessageTOAllUsers("通知所有用户编辑了");
 		return list;
 		
 	}
