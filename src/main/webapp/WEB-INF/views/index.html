@@ -19,6 +19,32 @@
 				<h1 class="page-header">客户管理</h1>
 				<a href="#" onclick="showInfo()">showAll</a>
 			</div>
+			<div style="margin: 0 auto;width: 500px;">
+			<table border="0" cellspacing="0" cellpadding="0" width="750" height="35">
+			    <tbody>
+			        <tr>
+			            <td valign="middle">
+				            <table border="0" cellspacing="0" cellpadding="0" width="750" height="35">
+				                <tbody>
+				                    <tr>
+				                        <td style="font-size: 14px;background-color: red;" valign="bottom"  width="100"><i class="iconfont" style="font-size: 30px;">&#xe607;</i></td>
+				                        <td style="font-size: 20px;background-color: red;" height="35" valign="middle"  width="640">
+				                        	<marquee width="750" scrollamount="10" scrolldelay="2">
+				                        		<div align="center">
+				                        			<font id="tz" color="white">
+				                        				&nbsp;重要通知：欢迎关临鱼摆摆网店装修网!! 本站分享的淘宝模板完全免费且永久使用！请记住我们的网站地址是www.yubaibai.com.cn!
+				                        			</font>
+				                        		</div>
+				                        	</marquee>
+				                        </td>
+				                    </tr>
+				                </tbody>
+				            </table>
+			            </td>
+			        </tr>
+			    </tbody>
+			</table>
+		</div>
 			<!-- /.col-lg-12 -->
 		</div>
 		<!-- /.row -->
@@ -244,6 +270,29 @@
 
 	<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
 	<script type="text/javascript">
+	
+	$(function(){
+		var ws = new WebSocket("ws://localhost:8081/mywork/myHandler");
+		
+		ws.onopen = function(evt) { 
+		  console.log("Connection open ..."); 
+		  ws.send("Hello WebSockets!");
+		};
+		
+		ws.onmessage = function(evt) {
+		  console.log( "Received Message: " + evt.data);
+		  document.getElementById("tz").innerText="重要通知："+ evt.data;
+		  /* ws.close(); */
+		};
+		
+		ws.onclose = function(evt) {
+		  console.log("Connection closed.");
+		};      
+		
+		
+	})
+	
+	
 	function showInfo(){
 		$.ajax({
 			type:"get",

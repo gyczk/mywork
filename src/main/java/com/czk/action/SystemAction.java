@@ -60,10 +60,11 @@ public class SystemAction {
 	
 	@GetMapping({ "/index" })
 	public String index(Model model,HttpServletRequest request) {
+		SysUser sysUser = (SysUser)SecurityUtils.getSubject().getPrincipal();
 		/*List<Tree<MenuDO>> menus = menuService.listMenuTree(getUserId());
 		model.addAttribute("menus", menus);
-		model.addAttribute("name", getUser().getName());*/
-		SysUser sysUser = (SysUser)SecurityUtils.getSubject().getPrincipal();
+		*/
+		model.addAttribute("name", sysUser.getUsername());
 		SysFile sysFile = fileService.get(sysUser.getPicId());
 		if(sysFile!=null&&sysFile.getUrl()!=null){
 			if(fileService.isExist(sysFile.getUrl())){

@@ -41,7 +41,7 @@
 	</aop:config>
 	
 	<websocket:handlers>
-        <websocket:mapping path="/myHandler.action" handler="myHandler"/>
+        <websocket:mapping path="/myHandler" handler="myHandler"/>
         <websocket:handshake-interceptors>
             <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
         </websocket:handshake-interceptors>

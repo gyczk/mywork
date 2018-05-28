@@ -73,14 +73,19 @@ public class CustomerAction {
 		model.addAttribute("custIndustry", queryVo.getCustIndustry());
 		model.addAttribute("custLevel", queryVo.getCustLevel());
 		int i = page.getTotal()/page.getSize();
-		myHandler.sendMessage("华华牛逼");
 		return "index";
 	}
-	
+	/***
+	 * 根据id查询
+	 * @param id
+	 * @return
+	 * @throws IOException 
+	 */
 	@RequestMapping("/edit")
 	@ResponseBody
-	public Customer edit(@RequestParam("id") Long id){
+	public Customer edit(@RequestParam("id") Long id) throws IOException{
 		Customer customer = customerService.queryCuestomerById(id);
+		myHandler.sendMessage("编辑了 "+id);
 		return customer;
 	}
 	
