@@ -29,4 +29,6 @@ public interface SysMenuMapper {
     int updateByPrimaryKey(SysMenu record);
 
 	List<SysMenu> selectMenuList(Long userId);
+
+	List<SysMenu> getMenuListByUserId(Long userId);
 }

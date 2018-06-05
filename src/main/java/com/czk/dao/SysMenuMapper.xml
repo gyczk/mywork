@@ -298,6 +298,20 @@
 		LEFT JOIN sys_role c ON b.role_id = c.role_id LEFT JOIN sys_role_menu d 
 		on c.role_id = d.role_id left join sys_menu f on d.menu_id = f.menu_id
 		where a.user_id =  #{userId,jdbcType=BIGINT}
-  </select> 
+  </select>
+  
+  <select id="getMenuListByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  	select 
+		
+	      distinct
+	   
+ 		f.*
+		from sys_user a LEFT JOIN sys_user_role b ON a.user_id = b.user_id 
+		LEFT JOIN sys_role c ON b.role_id = c.role_id LEFT JOIN sys_role_menu d 
+		on c.role_id = d.role_id left join sys_menu f on d.menu_id = f.menu_id
+		where a.user_id =  #{userId,jdbcType=BIGINT} and f.type in (0,1)
+		order by
+		f.order_num
+  </select>
   
 </mapper>

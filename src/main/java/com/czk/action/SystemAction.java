@@ -1,5 +1,7 @@
 package com.czk.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,9 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.czk.domain.SysFile;
+import com.czk.domain.SysMenu;
 import com.czk.domain.SysUser;
+import com.czk.domain.Tree;
 import com.czk.service.SysFileService;
+import com.czk.service.SysMeneService;
 import com.czk.service.impl.FilterChainDefinitionsService;
+import com.czk.utils.UserUtils;
 
 
 @Controller
@@ -32,6 +38,18 @@ public class SystemAction {
 	
 	@Autowired
 	private SysFileService fileService;
+	
+	@Autowired
+	private SysMeneService sysMenuService;
+	
+	@GetMapping("/")
+	public String login(){
+		SysUser user = UserUtils.getLoginUser();
+		if(user!=null){
+			return "redirect:/index";
+		}
+		return "login";
+	}
 	
 	@GetMapping("/login")
 	public String index(@ModelAttribute("msg") String error, Model model){
@@ -75,6 +93,9 @@ public class SystemAction {
 		}else {
 			model.addAttribute("picUrl","/img/photo_s.jpg");
 		}
+		//获取系统左侧导航菜单
+		List<Tree<SysMenu>> menus= sysMenuService.getSysMenu(sysUser.getUserId());
+		model.addAttribute("menus", menus);
 		model.addAttribute("username", sysUser.getUsername());
 		return "index_v1";
 	}
@@ -118,7 +139,12 @@ public class SystemAction {
 	
 	@RequestMapping("/error") 
 	public String error(){
-		return "/error";
+		return "error";
+	}
+	
+	@RequestMapping("/main") 
+	public String main(){
+		return "main";
 	}
 	
 }
