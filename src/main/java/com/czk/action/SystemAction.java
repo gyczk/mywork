@@ -88,10 +88,10 @@ public class SystemAction {
 			if(fileService.isExist(sysFile.getUrl())){
 				model.addAttribute("picUrl",request.getContextPath()+sysFile.getUrl());
 			}else {
-				model.addAttribute("picUrl","/img/photo_s.jpg");
+				model.addAttribute("picUrl",request.getContextPath()+"/img/photo_s.jpg");
 			}
 		}else {
-			model.addAttribute("picUrl","/img/photo_s.jpg");
+			model.addAttribute("picUrl",request.getContextPath()+"/img/photo_s.jpg");
 		}
 		//获取系统左侧导航菜单
 		List<Tree<SysMenu>> menus= sysMenuService.getSysMenu(sysUser.getUserId());
