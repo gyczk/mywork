@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -31,13 +30,12 @@ import com.czk.domain.Tree;
 import com.czk.service.SysFileService;
 import com.czk.service.SysMeneService;
 import com.czk.service.impl.FilterChainDefinitionsService;
-import com.czk.utils.R;
 import com.czk.utils.UserUtils;
 import com.czk.websocket.MyHandler;
 
 
-@Controller
-public class SystemAction {
+
+public class SystemAction_old {
 	
 	@Autowired
 	private FilterChainDefinitionsService filterService;
@@ -61,24 +59,28 @@ public class SystemAction {
 	}
 	
 	@GetMapping("/login")
-	public String index(Model model){
+	public String index(@ModelAttribute("msg") String error, Model model){
+		if(StringUtils.isNotBlank(error)){
+			model.addAttribute("error", error);
+		}
 		return "login";
 	}
 	
 	@PostMapping("/login")
-	@ResponseBody
-	public R login(SysUser user,HttpSession session,RedirectAttributes model){
+	public String login(SysUser user,HttpSession session,RedirectAttributes model){
 		Subject subject = SecurityUtils.getSubject();
 		AuthenticationToken token = new UsernamePasswordToken(user.getUsername(),user.getPassword());
 		try {
 			subject.login(token);
-			return R.ok();
+			SysUser lgoinUser =  (SysUser) subject.getPrincipal();
 			
-		} catch (AuthenticationException e) {
 			
-			return R.error("用户名或密码错误");
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addFlashAttribute("msg", "用户名密码错误");
+			return "redirect:/login";
 		}
-		
+		return "redirect:/index";
 	}
 	
 	@GetMapping({ "/index" })
@@ -135,12 +137,12 @@ public class SystemAction {
 		filterService.updateFilter();
 	}
 	
-	/*@RequestMapping("/logout")  
+	@RequestMapping("/logout")  
     public String logout() { 
 		
 		SecurityUtils.getSubject().logout();
-        return "login";  
-    }  */
+        return "redirect:/";  
+    }  
 	
 	@RequestMapping("/error") 
 	public String error(){

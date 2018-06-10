@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -17,23 +18,31 @@ public class MyHandler extends TextWebSocketHandler {
 	MyWorkConfig myWorkConfig;
 //	private WebSocketSession session;
 	private static HashMap<Long, WebSocketSession> webSocketSet = new HashMap<Long, WebSocketSession>();
-
+	
+	public HashMap<Long, WebSocketSession> getWebSocketSet(){
+		return  webSocketSet;
+	}
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) {
-
-		System.out.println(message);
+		if(session!=null){
+			System.out.println(message);
+		}
+		
 	}
 
 	public void afterConnectionEstablished(WebSocketSession session) {
-		Map<String, Object> map = session.getAttributes();
-		long userID = (long) map.get("userID");
-		webSocketSet.put(userID, session);
-		try {
-			session.sendMessage(new TextMessage(myWorkConfig.getUploadPath()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(session!=null){
+			Map<String, Object> map = session.getAttributes();
+			long userID = (long) map.get("userID");
+			webSocketSet.put(userID, session);
+			try {
+				session.sendMessage(new TextMessage(myWorkConfig.getUploadPath()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 	}
 
 	public void sendMessage(String message) throws IOException {
@@ -57,4 +66,20 @@ public class MyHandler extends TextWebSocketHandler {
 		
 
 	}
+	@Override
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		
+		// TODO Auto-generated method stub
+//		session.sendMessage(new TextMessage("连接关闭"));
+		/*webSocketSet.get(UserUtils.getLoginUser().getUserId()).close();
+		webSocketSet.remove(UserUtils.getLoginUser().getUserId());*/
+		super.afterConnectionClosed(session, status);
+	}
+	
+	@Override
+	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+		// TODO Auto-generated method stub
+		super.handleTransportError(session, exception);
+	}
+	
 }
