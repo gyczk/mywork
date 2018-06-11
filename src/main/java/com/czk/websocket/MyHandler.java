@@ -72,4 +72,20 @@ public class MyHandler extends TextWebSocketHandler {
 		
 	}
 	
+	@Override
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		
+		// TODO Auto-generated method stub
+//		session.sendMessage(new TextMessage("连接关闭"));
+		/*webSocketSet.get(UserUtils.getLoginUser().getUserId()).close();
+		webSocketSet.remove(UserUtils.getLoginUser().getUserId());*/
+		super.afterConnectionClosed(session, status);
+	}
+	
+	@Override
+	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+		// TODO Auto-generated method stub
+		super.handleTransportError(session, exception);
+	}
+	
 }
