@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="renderer" content="webkit">
+<meta name="ctx" th:content="${#httpServletRequest.getContextPath()}" />
 <title>面向学习型的开源框架，简洁高效，减少过渡封装，展现技术本质</title>
 <meta name="keywords" content="面向学习型的开源框架，简洁高效，杜绝过渡封装，展现技术本质本质">
 <meta name="description" content="面向学习型的开源框架，简洁高效，杜绝过渡封装，展现技术本质本质">
@@ -55,7 +56,7 @@
 								<li><a @click="personal" href="#">密码修改</a></li>
 								<li><a @click="personal" href="#">信箱</a></li>
 								<li class="divider"></li>
-								<li><a href="/logout">安全退出</a></li>
+								<li><a href="logout">安全退出</a></li>
 							</ul>
 							<div class="logo-element">BootDo</div>
 						</div>
@@ -158,7 +159,7 @@
 						<li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
 					</ul>
 				</div>
-				<a href="/logout" class="roll-nav roll-right J_tabExit"><i
+				<a href="logout" class="roll-nav roll-right J_tabExit"><i
 					class="fa fa fa-sign-out"></i> 退出</a>
 			</div>
 			<div class="row J_mainContent" id="content-main">
@@ -307,7 +308,7 @@
 	<script type="text/javascript">
 		var stompClient = null;
 		$(function() {
-			connect();
+			/* connect(); */
 		});
 
 		function connect() {

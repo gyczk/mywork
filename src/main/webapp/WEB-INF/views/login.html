@@ -10,7 +10,11 @@
 <link rel="stylesheet" href="css/loginstyle.css" th:href="@{/css/loginstyle.css}">
 <script src="../../js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
 
-
+<script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+    </script>
 </head>
 
 <body>
@@ -32,12 +36,13 @@
 		<!-- <input type="checkbox" id="remebers">记住用户名 -->
 		<input type="button" value="Login" onclick="login()">
 	</form>
-	<span id="loginInfo" th:if="${error}" th:text="${error}"></span>
+	<span id="loginInfo" ></span>
 </div>
 
 
 
 	</body>
+	<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
 <script type="text/javascript">
 	$(document).ready(function () {
 		var username = getCookie("user");
@@ -63,9 +68,22 @@
 				}
 			}
 		}) */
-		var form = $("#form");
+		/* var form = $("#form");
 		form.attr('action',"login")
-		$("#form").submit();
+		$("#form").submit(); */
+		
+		$.ajax({
+            type: "POST",
+            url: ctx+"login",
+            data: $('#form').serialize(),
+            success: function (r) {
+                if (r.code == 0) {
+                    parent.location.href = ctx+'index';
+                } else {
+                    $("#loginInfo").text(r.msg);
+                }
+            }
+        });
 	}
 	
 	
