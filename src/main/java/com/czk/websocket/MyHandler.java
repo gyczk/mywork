@@ -66,15 +66,12 @@ public class MyHandler extends TextWebSocketHandler {
 		
 
 	}
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		Long userID = UserUtils.getLoginUser().getUserId();
-		webSocketSet.remove(userID);
-		
-	}
+	
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		
+		Long userID = UserUtils.getLoginUser().getUserId();
+		webSocketSet.remove(userID);
 		// TODO Auto-generated method stub
 //		session.sendMessage(new TextMessage("连接关闭"));
 		/*webSocketSet.get(UserUtils.getLoginUser().getUserId()).close();
