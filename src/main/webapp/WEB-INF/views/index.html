@@ -274,6 +274,10 @@
 	$(function(){
 		var ws = new WebSocket("ws://localhost:8081/mywork/myHandler");
 		
+		 window.onbeforeunload = function(event) {
+             ws.onclose =function(){};
+             ws.close();
+         };
 		ws.onopen = function(evt) { 
 		  console.log("Connection open ..."); 
 		  ws.send("Hello WebSockets!");

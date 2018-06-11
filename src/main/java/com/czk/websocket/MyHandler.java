@@ -3,6 +3,7 @@ package com.czk.websocket;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
@@ -17,14 +18,14 @@ public class MyHandler extends TextWebSocketHandler {
 	@Autowired
 	MyWorkConfig myWorkConfig;
 //	private WebSocketSession session;
-	private static HashMap<Long, WebSocketSession> webSocketSet = new HashMap<Long, WebSocketSession>();
+	private static ConcurrentHashMap<Long, WebSocketSession> webSocketSet = new ConcurrentHashMap<Long, WebSocketSession>();
 	
-	public HashMap<Long, WebSocketSession> getWebSocketSet(){
+	public ConcurrentHashMap<Long, WebSocketSession> getWebSocketSet(){
 		return  webSocketSet;
 	}
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) {
-		if(session!=null){
+		if(session!=null&&session.isOpen()){
 			System.out.println(message);
 		}
 		
@@ -48,7 +49,7 @@ public class MyHandler extends TextWebSocketHandler {
 	public void sendMessage(String message) throws IOException {
 		Long userID = UserUtils.getLoginUser().getUserId();
 		WebSocketSession ws = webSocketSet.get(userID);
-		if (ws != null) {
+		if (ws != null&&ws.isOpen()) {
 			ws.sendMessage(new TextMessage(message));
 		}
 
@@ -68,18 +69,34 @@ public class MyHandler extends TextWebSocketHandler {
 	}
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		
+		webSocketSet.remove(getUserId(session));
 		// TODO Auto-generated method stub
 //		session.sendMessage(new TextMessage("连接关闭"));
 		/*webSocketSet.get(UserUtils.getLoginUser().getUserId()).close();
 		webSocketSet.remove(UserUtils.getLoginUser().getUserId());*/
-		super.afterConnectionClosed(session, status);
+//		session.close();
 	}
 	
 	@Override
-	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-		// TODO Auto-generated method stub
-		super.handleTransportError(session, exception);
+	public void handleTransportError(WebSocketSession session, Throwable exception)   {
+		 if (session.isOpen()) {
+	            try {
+					session.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+	     webSocketSet.remove(getUserId(session));
 	}
+	
+	private Long getUserId(WebSocketSession session) {
+        try {
+            Long clientId = (Long) session.getAttributes().get("userID");
+            return clientId;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 	
 }
