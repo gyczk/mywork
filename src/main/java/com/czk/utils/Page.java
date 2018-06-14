@@ -6,17 +6,21 @@ public class Page<T> {
     public Page(){
     	
     }
+    private List<T> rows;
 	private int total;
+	
 	private int page;
 	private int size;
 	private int totalPages;
+	
+	
     public int getTotalPages() {
 		return total/size;
 	}
 	public void setTotalPages(int totalPages) {
 		this.totalPages = totalPages;
 	}
-	private List<T> rows;
+	
 	public int getTotal() {
 		return total;
 	}
