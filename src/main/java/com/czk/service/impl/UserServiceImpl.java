@@ -12,15 +12,20 @@ import com.czk.domain.SysUser;
 import com.czk.service.UserService;
 import com.czk.utils.Page;
 import com.czk.utils.PageUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private SysUserMapper sysUserMapper;
 	@Override
 	public PageUtils<SysUser> getUserList(PageUtils<SysUser> pageUtils, SysUser condition) {
-		
-		List list = sysUserMapper.getUserListBycondition(condition);
-		return null;
+		PageHelper.startPage(pageUtils.getOffset(), pageUtils.getLimit());
+		List<SysUser> list = sysUserMapper.getUserListBycondition(condition);
+		PageInfo<SysUser> pageInfo = new PageInfo<>(list);
+		pageUtils.setRows(list);
+		pageUtils.setTotal((int) pageInfo.getTotal());
+		return pageUtils;
 	}
 
 	

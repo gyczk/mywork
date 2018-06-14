@@ -28,5 +28,5 @@ public interface SysUserMapper {
 
     int updateByPrimaryKey(SysUser record);
 
-	List getUserListBycondition(SysUser condition);
+	List<SysUser> getUserListBycondition(SysUser condition);
 }

@@ -25,7 +25,7 @@ public class DaoTest {
 	public void CustomerDaoTest(){
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext-dao.xml");
 		CustomerMapper customerMapper = (CustomerMapper) ctx.getBean("customerMapper");
-		List<Customer> list = customerMapper.selectAll();
+		List<Customer> list = customerMapper.selectByExample(null);
 		for(Customer customer:list){
 			System.out.println(customer);
 		}

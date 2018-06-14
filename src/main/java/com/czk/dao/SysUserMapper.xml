@@ -430,4 +430,21 @@
       district = #{district,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
+  
+  <select id="getUserListBycondition" parameterType="com.czk.domain.SysUser" resultMap="BaseResultMap">
+  	select * from sys_user 
+  	<where>
+  		<if test="name != null">
+  			and name like concat('%',#{name},'%') 
+  		</if>
+  		<if test="mobile != null">
+  			and mobile like concat('%',#{mobile},'%')	
+  		</if>
+  		<if test="sex != null">
+  			and  sex = #{sex}
+  		</if>
+  	</where>
+  	
+  </select>
+  
 </mapper>
