@@ -25,7 +25,7 @@
 			function load() {
 				$("#exampleTable").bootstrapTable({
 					method : 'post', // 服务器数据的请求方式 get or post
-					url : "list", // 服务器数据的加载地址
+					url : "user/list", // 服务器数据的加载地址
 					// showRefresh : true,
 					// showToggle : true,
 					// showColumns : true,
@@ -162,7 +162,26 @@
 									<input type="text" class="form-control" id="add_email" name="email" placeholder="邮箱" />
 								</div>
 							</div>
+							<div class="form-group">
+								<label for="add_mobile" class="col-sm-2 control-label">手机</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="add_mobile" name="mobile" placeholder="手机" />
+								</div>
+							</div>
 							
+
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label">性别</label>
+								<div class="col-sm-8">
+									<label class="radio-inline" active>
+										<input type="radio" name="sex"  value="1" > 男
+									</label>
+									<label class="radio-inline"> 
+										<input type="radio" name="sex" value="0" /> 女
+									</label>
+								</div>
+							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">状态</label>
 								<div class="col-sm-8">
