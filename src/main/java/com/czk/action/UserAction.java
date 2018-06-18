@@ -102,5 +102,25 @@ public class UserAction {
 		}
 		return R.error("删除失败");
 	}
+	@GetMapping("/restPwd/{userId}")
+	public String restPwd(@PathVariable("userId")Long id,Model model){
+		SysUser user = userService.getUserByUserId(id);
+		model.addAttribute("user",user);
+		return "user/resetPwd";
+		
+	}
+	@PostMapping("/adminUpdatePwd")
+	public R updatePwd(SysUser user){
+		try {
+			int count = userService.adminUpdatePwd(user);
+			if(count>0){
+				return R.ok();
+			}
+		} catch (Exception e) {
+			return R.error(1,e.getMessage());
+		}
+		return R.error();
+		
+	}
 	
 }

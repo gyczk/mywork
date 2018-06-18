@@ -22,6 +22,8 @@ public interface UserService {
 
 	int del(Long id);
 
+	int adminUpdatePwd(SysUser user) throws Exception;
+
 	
 
 }

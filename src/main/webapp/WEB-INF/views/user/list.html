@@ -207,6 +207,17 @@
 				
 			}
 			
+			function resetPwd(userId){
+				layer.open({
+					type: 2,
+					title: '修改密码',
+					maxmin: true,
+					shadeClose: false, // 点击遮罩关闭层
+					area: ['600px', '420px'],
+					content: 'user/restPwd/'+userId
+				});
+			}
+			
 		</script>
 </head>
 <body>

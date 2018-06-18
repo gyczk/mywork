@@ -11,6 +11,7 @@ import com.czk.domain.SysUserExample;
 import com.czk.domain.SysUserExample.Criteria;
 import com.czk.service.UserService;
 import com.czk.utils.PageUtils;
+import com.czk.utils.UserUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 @Service
@@ -66,6 +67,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int del(Long id) {
 		return sysUserMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public int adminUpdatePwd(SysUser user) throws Exception {
+		SysUser loginUser = UserUtils.getLoginUser();
+		if("admin".equals(loginUser.getUsername())){
+			throw new Exception("超级管理员的账号不允许直接重置"); 
+		}
+		Long userId = user.getUserId();
+		String password = user.getPassword();
+		int count = sysUserMapper.updatePwd(userId,password); 
+		return count;
 	}
 	
 	

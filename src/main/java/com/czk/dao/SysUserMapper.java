@@ -33,4 +33,6 @@ public interface SysUserMapper {
 	int batchDel(Long[] ids);
 	
 	int del(Long userId);
+
+	int updatePwd(@Param("userId")Long userId, @Param("password")String password);
 }

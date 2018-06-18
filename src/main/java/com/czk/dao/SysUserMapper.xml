@@ -447,7 +447,7 @@
   	
   </select>
   
-  <delete id="batchDel"   parameterType="Long[]">
+  <delete id="batchDel" parameterType="Long[]">
   	delete from sys_user where user_id in 
   	<foreach collection="array" item="userId" open="(" separator=","  close=")" >
   		#{userId}
@@ -457,5 +457,9 @@
   <delete id="del" parameterType="Long">
   	delete from sys_user where user_id = #{userId}
   </delete>
+  
+  <update id="updatePwd">
+  	update sys_user  set password = #{password} where user_id = #{userId}
+  </update>
   
 </mapper>
