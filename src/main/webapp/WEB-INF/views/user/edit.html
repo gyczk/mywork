@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8" />
+<meta name="ctx" th:content="${#httpServletRequest.getContextPath()}" />
+<title>用户列表</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" src="../../../js/jquery.min.js"
+	th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript"
+	src="../../../bootstrap/js/bootstrap.min.js"
+	th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript"
+	src="../../../bootstrap/js/bootstrap-table.min.js"
+	th:src="@{/bootstrap/js/bootstrap-table.min.js}"></script>
+<script src="../../../bootstrap/js/bootstrap-table-zh-CN.js"
+	th:src="@{/bootstrap/js/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" src="../../../js/layer/layer.js"
+	th:src="@{/js/layer/layer.js}"></script>
+<script type="text/javascript" src="../../../js/jquery.validate.min.js"
+	th:src="@{/js/jquery.validate.min.js}"></script>
+<script type="text/javascript" src="../../../js/messages_zh.min.js"
+	th:src="@{/js/messages_zh.min.js}"></script>
+<link rel="stylesheet" href="../../../bootstrap/css/bootstrap.min.css"
+	th:href="@{/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" href="../../../bootstrap/css/bootstrap-table.css"
+	th:href="@{/bootstrap/css/bootstrap-table.css}" />
+<link rel="stylesheet" href="../../../css/font-awesome.css"
+	th:href="@{/css/font-awesome.css}" />
+<style type="text/css">
+.form_div {
+	margin-top: 20px;
+}
+
+body {
+	overflow-x: hidden;
+}
+
+.form_button {
+	margin-right: 50px;
+}
+
+.center-vertical {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.m-t {
+	margin-top: 15px;
+}
+
+form label.error {
+	/* width: 200px;
+	margin-left: 8px; */
+	color: Red;
+}
+</style>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+</head>
+
+<body>
+	<div class="wrapper wrapper-content form_div">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="edit_user_form">
+							<input type="hidden" id="add_userId" name="userId" th:value="${user.userId}"/>
+							<div class="form-group">
+								<label for="add_name" class="col-sm-3 control-label">姓名</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="add_name"
+										name="name" placeholder="姓名" th:value="${user.name}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="add_username" class="col-sm-3 control-label">用戶名</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="add_username"
+										name="username" placeholder="用戶名" th:value="${user.username}" readonly/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="add_password" class="col-sm-3 control-label">密码</label>
+								<div class="col-sm-8">
+									<input type="password" class="form-control" id="add_password"
+										name="password" placeholder="密码" th:value="${user.password}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="add_confirm_password" class="col-sm-3 control-label">确认密码</label>
+								<div class="col-sm-8">
+									<input type="password" class="form-control"
+										id="add_confirm_password" name="confirm_password"
+										placeholder="确认密码" th:value="${user.password}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="add_email" class="col-sm-3 control-label">邮箱</label>
+								<div class="col-sm-8">
+									<input type="email" class="form-control" id="add_email"
+										name="email" placeholder="邮箱" th:value="${user.email}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="add_mobile" class="col-sm-3 control-label">手机</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="add_mobile"
+										name="mobile" placeholder="手机" th:value="${user.mobile}"/>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">性别</label>
+								<div class="col-sm-8">
+									<label class="radio-inline" active> <input type="radio"
+										name="sex" value="1" th:field="${user.sex}"> 男
+									</label> <label class="radio-inline"> <input type="radio"
+										name="sex" value="0" th:field="${user.sex}"/> 女
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">状态</label>
+								<div class="col-sm-8">
+									<label class="radio-inline" active> <input type="radio"
+										name="status" value="1" th:field="${user.status}"> 正常
+									</label> <label class="radio-inline"> <input type="radio"
+										name="status" value="0" th:field="${user.status}"/> 禁用
+									</label>
+								</div>
+							</div>
+							<input type="hidden" name="roleIds" id="roleIds">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">角色</label>
+								<div class="col-sm-8">
+									<label class="checkbox-inline">
+										<!-- th:each="role:${roles}" --> <input name="role"
+										type="checkbox">超级管理员<!-- th:value="${role.roleId}" th:text="${role.roleName}" th:checked="${role.roleSign}" -->
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class=" col-sm-offset-4   ">
+									<button type="submit" class="btn btn-success form_button">提交</button>
+									<button type="button" class="btn  form_button" id="resetButton">重置</button>
+									<button type="button" class="btn btn-inverse"
+										onclick="closeWin()">取消</button>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+<script type="text/javascript">
+	$(document).ready(function() {
+		// 初始化内容
+		var validator = validateRule();
+		$("#resetButton").click(function() {
+			validator.resetForm();
+			$("#edit_user_form")[0].reset();
+		});
+	});
+
+	function updateUser() {
+		$.ajax({
+			url:ctx+"sys/user/update",
+			dataType:'json',
+			method:'post',
+			data : $("#edit_user_form").serialize(),
+			success:function(data){
+				if(data.code==0){
+					parent.layer.msg("更新用户成功");
+					parent.reLoad();
+					var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+					parent.layer.close(index); //再执行关闭   
+				}else{
+					parent.layer.alert(data.msg);
+				}
+			},
+			error : function(request) {
+				parent.layer.alert("Connection error");
+				
+			}
+			
+		});
+	}
+	//自定义手机号验证
+	jQuery.validator.addMethod("isphoneNum", function(value, element) {
+		//		debugger
+		var length = value.length;
+		var mobile = /^1[3|5|8]{1}[0-9]{9}$/;
+		return this.optional(element) || (length == 11 && mobile.test(value));
+	}, "请正确填写您的手机号码");
+
+	function validateRule() {
+		var icon = "<i class='fa fa-times-circle'></i> ";
+		var validator = $("#edit_user_form").validate({
+			rules : {
+				name : {
+					required : true
+				},
+				username : {
+					required : true,
+					minlength : 2,
+					/* remote : {
+						url : ctx+"sys/user/isExist",
+						type : "post",
+						dataType : "json",
+						data : {
+							username : function() {
+								return $("#add_username").val();
+							}
+						}
+					} */
+				},
+				password : {
+					required : true,
+					minlength : 6
+				},
+				confirm_password : {
+					required : true,
+					minlength : 6,
+					equalTo : "#add_password"
+				},
+				email : {
+					required : false,
+					email : true
+				},
+				mobile : {
+					required : false,
+					minlength : 11,
+					maxlength : 11,
+					isphoneNum : true
+				}
+			},
+			messages : {
+				name : {
+					required : icon + "请输入姓名"
+				},
+				username : {
+					required : icon + "请输入您的用户名",
+					minlength : icon + "用户名必须两个字符以上",
+					remote : icon + "用户名已经存在"
+				},
+				password : {
+					required : icon + "请输入您的密码",
+					minlength : icon + "密码必须6个字符以上"
+				},
+				confirm_password : {
+					required : icon + "请再次输入密码",
+					minlength : icon + "密码必须6个字符以上",
+					equalTo : icon + "两次输入的密码不一致"
+				},
+				email : {
+					required : icon + "请输入邮箱",
+					email : icon + "请输入正确的邮箱"
+				},
+				mobile : {
+					minlength : icon + "最少11位",
+					maxlength : icon + "最多11位",
+					isphoneNum : icon + "请输入正确的手机号"
+				}
+			},
+			submitHandler : function(form) {
+				updateUser();
+			}
+		});
+		return validator;
+	}
+
+	function closeWin() {
+		var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+		parent.layer.close(index); //再执行关闭   
+		//		alert(111)
+	}
+
+	function restForm() {
+		$("#edit_user_form")[0].reset();
+	}
+</script>
+
+</html>

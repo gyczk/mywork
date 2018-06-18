@@ -29,4 +29,8 @@ public interface SysUserMapper {
     int updateByPrimaryKey(SysUser record);
 
 	List<SysUser> getUserListBycondition(SysUser condition);
+
+	int batchDel(Long[] ids);
+	
+	int del(Long userId);
 }
