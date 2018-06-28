@@ -33,5 +33,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 		
 		return list;
 	}
+	@Override
+	public List<SysRole> getRoleList() {
+		return sysRoleMapper.selectByExample(null);
+	}
 	
 }

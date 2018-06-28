@@ -3,6 +3,7 @@ package com.czk.service;
 import java.util.Map;
 
 import com.czk.domain.SysUser;
+import com.czk.domain.SysUserVo;
 import com.czk.utils.Page;
 import com.czk.utils.PageUtils;
 
@@ -12,11 +13,11 @@ public interface UserService {
 
 	boolean isExist(String username);
 
-	int addUser(SysUser user);
+	boolean addUser(SysUserVo userVo);
 
 	SysUser getUserByUserId(Long id);
 
-	int update(SysUser user);
+	boolean update(SysUserVo userVo);
 
 	int batchDel(Long[] ids);
 

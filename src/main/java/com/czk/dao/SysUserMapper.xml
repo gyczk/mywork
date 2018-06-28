@@ -115,7 +115,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.czk.domain.SysUser" >
+  <insert id="insert" parameterType="com.czk.domain.SysUser" useGeneratedKeys="true" keyProperty="userId">
     insert into sys_user (user_id, username, name, 
       password, dept_id, email, 
       mobile, status, user_id_create, 

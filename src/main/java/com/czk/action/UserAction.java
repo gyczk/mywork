@@ -19,6 +19,7 @@ import com.czk.service.SysRoleService;
 import com.czk.service.UserService;
 import com.czk.utils.PageUtils;
 import com.czk.utils.R;
+import com.czk.utils.UserUtils;
 
 @Controller
 @RequestMapping("/sys/user")
@@ -36,8 +37,9 @@ public class UserAction {
 	}
 	
 	@GetMapping("/add_page")
-	public String add_page(){
-		
+	public String add_page(Model model){
+		List<SysRole> roleList = sysRoleService.getRoleList();
+		model.addAttribute("roles",roleList);
 		return "user/add";
 	}
 	
@@ -63,9 +65,9 @@ public class UserAction {
 	
 	@PostMapping("/add")
 	@ResponseBody
-	public R add(SysUser user){
-		int count = userService.addUser(user);
-		if(count>0){
+	public R add(SysUserVo userVo){
+		boolean flag = userService.addUser(userVo);
+		if(flag){
 			return R.ok();
 		}
 		return R.error();
@@ -86,8 +88,8 @@ public class UserAction {
 	@ResponseBody
 	public R update(SysUserVo userVo){
 		SysUser user = userVo.getSysUser();
-		int count = userService.update(user);
-		if(count>0){
+		boolean flag = userService.update(userVo);
+		if(flag){
 			return R.ok();
 		}
 		return R.error();

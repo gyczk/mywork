@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="utf-8" />
@@ -73,21 +73,21 @@ form label.error {
 								<label for="add_name" class="col-sm-3 control-label">姓名</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" id="add_name"
-										name="name" placeholder="姓名" />
+										name="sysUser.name" placeholder="姓名" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="add_username" class="col-sm-3 control-label">用戶名</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" id="add_username"
-										name="username" placeholder="用戶名" />
+										name="sysUser.username" placeholder="用戶名" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="add_password" class="col-sm-3 control-label">密码</label>
 								<div class="col-sm-8">
 									<input type="password" class="form-control" id="add_password"
-										name="password" placeholder="密码" />
+										name="sysUser.password" placeholder="密码" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -102,14 +102,14 @@ form label.error {
 								<label for="add_email" class="col-sm-3 control-label">邮箱</label>
 								<div class="col-sm-8">
 									<input type="email" class="form-control" id="add_email"
-										name="email" placeholder="邮箱" />
+										name="sysUser.email" placeholder="邮箱" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="add_mobile" class="col-sm-3 control-label">手机</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" id="add_mobile"
-										name="mobile" placeholder="手机" />
+										name="sysUser.mobile" placeholder="手机" />
 								</div>
 							</div>
 
@@ -117,9 +117,9 @@ form label.error {
 								<label class="col-sm-3 control-label">性别</label>
 								<div class="col-sm-8">
 									<label class="radio-inline" active> <input type="radio"
-										name="sex" value="1" checked="checked"> 男
+										name="sysUser.sex" value="1" checked="checked"> 男
 									</label> <label class="radio-inline"> <input type="radio"
-										name="sex" value="0" /> 女
+										name="sysUser.sex" value="0" /> 女
 									</label>
 								</div>
 							</div>
@@ -127,9 +127,9 @@ form label.error {
 								<label class="col-sm-3 control-label">状态</label>
 								<div class="col-sm-8">
 									<label class="radio-inline" active> <input type="radio"
-										name="status" value="1" checked="checked"> 正常
+										name="sysUser.status" value="1" checked="checked"> 正常
 									</label> <label class="radio-inline"> <input type="radio"
-										name="status" value="0" /> 禁用
+										name="sysUser.status" value="0" /> 禁用
 									</label>
 								</div>
 							</div>
@@ -137,9 +137,8 @@ form label.error {
 							<div class="form-group">
 								<label class="col-sm-3 control-label">角色</label>
 								<div class="col-sm-8">
-									<label class="checkbox-inline">
-										<!-- th:each="role:${roles}" --> <input name="role"
-										type="checkbox">超级管理员<!-- th:value="${role.roleId}" th:text="${role.roleName}" th:checked="${role.roleSign}" -->
+									<label class="checkbox-inline" th:each="role:${roles}" > 
+										<input name="sysUser.role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}"  >
 									</label>
 								</div>
 							</div>
@@ -169,8 +168,20 @@ form label.error {
 			$("#add_user_form")[0].reset();
 		});
 	});
-
+	
+	function getCheckedRoles(){
+		var roleIds = "";
+		$("input:checkbox[name='sysUser.role']:checked").each(function(i){
+			if(0==i){
+				roleIds = $(this).val();
+			}else{
+				roleIds += (","+$(this).val());
+			}
+		})
+		return roleIds;
+	}
 	function saveUser() {
+		$("#roleIds").val(getCheckedRoles());
 		$.ajax({
 			url:'add',
 			dataType:'json',
@@ -205,10 +216,10 @@ form label.error {
 		var icon = "<i class='fa fa-times-circle'></i> ";
 		var validator = $("#add_user_form").validate({
 			rules : {
-				name : {
+				"sysUser.name" : {
 					required : true
 				},
-				username : {
+				"sysUser.username" : {
 					required : true,
 					minlength : 2,
 					remote : {
@@ -222,7 +233,7 @@ form label.error {
 						}
 					}
 				},
-				password : {
+				"sysUser.password" : {
 					required : true,
 					minlength : 6
 				},
@@ -231,11 +242,11 @@ form label.error {
 					minlength : 6,
 					equalTo : "#add_password"
 				},
-				email : {
+				"sysUser.email" : {
 					required : false,
 					email : true
 				},
-				mobile : {
+				"sysUser.mobile" : {
 					required : false,
 					minlength : 11,
 					maxlength : 11,
@@ -243,15 +254,15 @@ form label.error {
 				}
 			},
 			messages : {
-				name : {
+				"sysUser.name" : {
 					required : icon + "请输入姓名"
 				},
-				username : {
+				"sysUser.username" : {
 					required : icon + "请输入您的用户名",
 					minlength : icon + "用户名必须两个字符以上",
 					remote : icon + "用户名已经存在"
 				},
-				password : {
+				"sysUser.password" : {
 					required : icon + "请输入您的密码",
 					minlength : icon + "密码必须6个字符以上"
 				},
@@ -260,11 +271,11 @@ form label.error {
 					minlength : icon + "密码必须6个字符以上",
 					equalTo : icon + "两次输入的密码不一致"
 				},
-				email : {
+				"sysUser.email" : {
 					required : icon + "请输入邮箱",
 					email : icon + "请输入正确的邮箱"
 				},
-				mobile : {
+				"sysUser.mobile" : {
 					minlength : icon + "最少11位",
 					maxlength : icon + "最多11位",
 					isphoneNum : icon + "请输入正确的手机号"

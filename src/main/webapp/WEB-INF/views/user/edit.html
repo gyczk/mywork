@@ -219,10 +219,10 @@ form label.error {
 		var icon = "<i class='fa fa-times-circle'></i> ";
 		var validator = $("#edit_user_form").validate({
 			rules : {
-				name : {
+				"sysUser.name" : {
 					required : true
 				},
-				username : {
+				"sysUser.username" : {
 					required : true,
 					minlength : 2,
 					/* remote : {
@@ -236,7 +236,7 @@ form label.error {
 						}
 					} */
 				},
-				password : {
+				"sysUser.password" : {
 					required : true,
 					minlength : 6
 				},
@@ -245,11 +245,11 @@ form label.error {
 					minlength : 6,
 					equalTo : "#add_password"
 				},
-				email : {
+				"sysUser.email" : {
 					required : false,
 					email : true
 				},
-				mobile : {
+				"sysUser.mobile" : {
 					required : false,
 					minlength : 11,
 					maxlength : 11,
@@ -257,15 +257,15 @@ form label.error {
 				}
 			},
 			messages : {
-				name : {
+				"sysUser.name" : {
 					required : icon + "请输入姓名"
 				},
-				username : {
+				"sysUser.username" : {
 					required : icon + "请输入您的用户名",
 					minlength : icon + "用户名必须两个字符以上",
 					remote : icon + "用户名已经存在"
 				},
-				password : {
+				"sysUser.password" : {
 					required : icon + "请输入您的密码",
 					minlength : icon + "密码必须6个字符以上"
 				},
@@ -274,11 +274,11 @@ form label.error {
 					minlength : icon + "密码必须6个字符以上",
 					equalTo : icon + "两次输入的密码不一致"
 				},
-				email : {
+				"sysUser.email" : {
 					required : icon + "请输入邮箱",
 					email : icon + "请输入正确的邮箱"
 				},
-				mobile : {
+				"sysUser.mobile" : {
 					minlength : icon + "最少11位",
 					maxlength : icon + "最多11位",
 					isphoneNum : icon + "请输入正确的手机号"

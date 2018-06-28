@@ -29,4 +29,6 @@ public interface SysUserRoleMapper {
     int updateByPrimaryKey(SysUserRole record);
 
 	List<Long> getRoleIdByUserId(Long id);
+
+	int batachInsert(List<SysUserRole> list);
 }

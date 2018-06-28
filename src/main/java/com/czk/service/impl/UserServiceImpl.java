@@ -1,14 +1,19 @@
 package com.czk.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.czk.dao.SysUserMapper;
+import com.czk.dao.SysUserRoleMapper;
 import com.czk.domain.SysUser;
 import com.czk.domain.SysUserExample;
 import com.czk.domain.SysUserExample.Criteria;
+import com.czk.domain.SysUserRole;
+import com.czk.domain.SysUserRoleExample;
+import com.czk.domain.SysUserVo;
 import com.czk.service.UserService;
 import com.czk.utils.PageUtils;
 import com.czk.utils.UserUtils;
@@ -18,6 +23,10 @@ import com.github.pagehelper.PageInfo;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private SysUserMapper sysUserMapper;
+	
+	@Autowired
+	private SysUserRoleMapper sysUserRoleMapper;
+	
 	@Override
 	public PageUtils<SysUser> getUserList(PageUtils<SysUser> pageUtils, SysUser condition) {
 		PageHelper.startPage(pageUtils.getOffset(), pageUtils.getLimit());
@@ -41,9 +50,29 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int addUser(SysUser user) {
-		int count = sysUserMapper.insert(user);
-		return count;
+	public boolean addUser(SysUserVo userVo) {
+		int userCount = sysUserMapper.insert(userVo.getSysUser());
+		Long userId = userVo.getSysUser().getUserId();
+		List<SysUserRole> list = new ArrayList<>();
+		List<Long> roleIds = userVo.getRoleIds();
+		for(Long roleId: roleIds){
+			SysUserRole role = new SysUserRole();
+			role.setUserId(userId);
+			role.setRoleId(roleId);
+			list.add(role);
+		}
+		int roleCount=0;
+		if(list.size()>0){
+			 roleCount =sysUserRoleMapper.batachInsert(list);
+		}
+		
+		
+		if(userCount>0&&roleCount>=0){
+			return true;
+		}
+		
+		
+		return false;
 	}
 
 	@Override
@@ -53,9 +82,34 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int update(SysUser user) {
-		int count = sysUserMapper.updateByPrimaryKey(user);
-		return count;
+	public boolean update(SysUserVo userVo) {
+		int userCount = sysUserMapper.updateByPrimaryKey(userVo.getSysUser());
+		Long userId = userVo.getSysUser().getUserId();
+		SysUserRoleExample example = new SysUserRoleExample();
+		SysUserRoleExample.Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(userId);
+		sysUserRoleMapper.deleteByExample(example);
+		
+		List<SysUserRole> list = new ArrayList<>();
+		List<Long> roleIds = userVo.getRoleIds();
+		for(Long roleId: roleIds){
+			SysUserRole role = new SysUserRole();
+			role.setUserId(userId);
+			role.setRoleId(roleId);
+			list.add(role);
+		}
+		int roleCount=0;
+		if(list.size()>0){
+			 roleCount =sysUserRoleMapper.batachInsert(list);
+		}
+		
+		
+		if(userCount>0&&roleCount>=0){
+			return true;
+		}
+		
+		
+		return false;
 	}
 
 	@Override

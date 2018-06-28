@@ -8,4 +8,6 @@ public interface SysRoleService {
 
 	List<SysRole> getRoleList(Long id);
 
+	List<SysRole> getRoleList();
+
 }
