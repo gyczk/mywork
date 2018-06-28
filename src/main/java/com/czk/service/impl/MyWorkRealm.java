@@ -44,6 +44,9 @@ public class MyWorkRealm extends AuthorizingRealm{
 			list = sysMenuMapper.selectMenuList(user.getUserId());
 		}
 		for(SysMenu sysMenu : list){
+			if(sysMenu==null){
+				System.out.println("000000000000000");
+			}
 			if(StringUtils.isNotBlank(sysMenu.getPerms())){
 				info.addStringPermission(sysMenu.getPerms());
 			}

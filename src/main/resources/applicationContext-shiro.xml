@@ -59,13 +59,11 @@
 	
 	<bean id="myWorkRealm" class="com.czk.service.impl.MyWorkRealm"></bean>
 	
-	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 	
 	
 	
-	<!-- 配置shiro框架提供的切面类，用于创建代理对象 -->
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"/>
+	
+	
 	
 	<bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter"> 
         <property name="redirectUrl" value="/login" /> 

@@ -96,7 +96,7 @@ public class CustomerAction {
 		return "ok";
 	}
 	
-	@RequiresPermissions("customer:findAll")
+//	@RequiresPermissions("customer:findAll")
 	@RequestMapping("/findAll")
 	@ResponseBody
 	public List findAll(String id) throws IOException{

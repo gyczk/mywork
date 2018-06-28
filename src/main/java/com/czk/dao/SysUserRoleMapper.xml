@@ -178,4 +178,9 @@
       role_id = #{roleId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id="getRoleIdByUserId" resultType="long">
+  	select role_id from sys_user_role
+  	where user_id  = #{id}
+  </select>
 </mapper>

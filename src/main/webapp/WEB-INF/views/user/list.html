@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+
 <head>
 <meta charset="utf-8" />
 <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}" />
@@ -224,7 +227,7 @@
 <body>
 	<div class="top">
 		<!-- 提供额外的视觉效果，标识一组按钮中的原始动作 -->
-		<button type="button" class="btn btn-primary" onclick="add()">
+		<button shiro:hasPermission="customer:findAll" type="button" class="btn btn-primary" onclick="add()">
 			增加</button>
 		<button type="button" class="btn btn-danger" onclick="batchDel()">
 			删除</button>

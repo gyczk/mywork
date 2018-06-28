@@ -1,6 +1,7 @@
 package com.czk.action;
 
-import org.junit.runners.Parameterized.Parameters;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.czk.domain.SysRole;
 import com.czk.domain.SysUser;
+import com.czk.domain.SysUserVo;
+import com.czk.service.SysRoleService;
 import com.czk.service.UserService;
 import com.czk.utils.PageUtils;
 import com.czk.utils.R;
@@ -21,6 +25,9 @@ import com.czk.utils.R;
 public class UserAction {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private SysRoleService sysRoleService;
 	
 	@GetMapping("")
 	public String userManage(){
@@ -68,14 +75,17 @@ public class UserAction {
 	@GetMapping("/edit_page/{userId}")
 	public String edit_page(@PathVariable("userId")Long id,Model model){
 		SysUser user = userService.getUserByUserId(id);
+		List<SysRole> roleList = sysRoleService.getRoleList(id);
 		model.addAttribute("user",user);
+		model.addAttribute("roles",roleList);
 		return "user/edit";
 		
 	}
 	
 	@PostMapping("/update")
 	@ResponseBody
-	public R update(SysUser user){
+	public R update(SysUserVo userVo){
+		SysUser user = userVo.getSysUser();
 		int count = userService.update(user);
 		if(count>0){
 			return R.ok();

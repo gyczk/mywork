@@ -214,6 +214,7 @@ $(function () {
                 // 移除tab对应的内容区
                 $('.J_mainContent .J_iframe').each(function () {
                     if ($(this).data('id') == closeTabId) {
+                    	 $(this).remove();
                         return false;
                     }
                 });

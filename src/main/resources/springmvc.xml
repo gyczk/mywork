@@ -51,6 +51,11 @@
 
 	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
 		<property name="templateResolver" ref="templateResolver" />
+		 <property name="additionalDialects">
+		 	<set>
+                <bean class="at.pollux.thymeleaf.shiro.dialect.ShiroDialect"/>
+            </set>
+         </property>
 	</bean>
 
 	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
@@ -70,11 +75,23 @@
 		<property name="maxUploadSize" value="5242880"></property>
 	</bean>
 	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
 	<!-- 开启shiro框架注解支持 -->
 	<bean id="defaultAdvisorAutoProxyCreator" 
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
 			<!-- 必须使用cglib方式为Action对象创建代理对象 -->
 		<property name="proxyTargetClass" value="true"/>
 	</bean>
+	
+	<!-- 配置shiro框架提供的切面类，用于创建代理对象 -->
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />  
+	</bean>
+	
+	
+	
+	
 	
 </beans>

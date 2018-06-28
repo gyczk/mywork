@@ -68,26 +68,26 @@ form label.error {
 				<div class="ibox float-e-margins">
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" id="edit_user_form">
-							<input type="hidden" id="add_userId" name="userId" th:value="${user.userId}"/>
+							<input type="hidden" id="add_userId" name="sysUser.userId" th:value="${user.userId}"/>
 							<div class="form-group">
 								<label for="add_name" class="col-sm-3 control-label">姓名</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" id="add_name"
-										name="name" placeholder="姓名" th:value="${user.name}"/>
+										name="sysUser.name" placeholder="姓名" th:value="${user.name}"/>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="add_username" class="col-sm-3 control-label">用戶名</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" id="add_username"
-										name="username" placeholder="用戶名" th:value="${user.username}" readonly/>
+										name="sysUser.username" placeholder="用戶名" th:value="${user.username}" readonly/>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="add_password" class="col-sm-3 control-label">密码</label>
 								<div class="col-sm-8">
 									<input type="password" class="form-control" id="add_password"
-										name="password" placeholder="密码" th:value="${user.password}"/>
+										name="sysUser.password" placeholder="密码" th:value="${user.password}"/>
 								</div>
 							</div>
 							<div class="form-group">
@@ -102,34 +102,35 @@ form label.error {
 								<label for="add_email" class="col-sm-3 control-label">邮箱</label>
 								<div class="col-sm-8">
 									<input type="email" class="form-control" id="add_email"
-										name="email" placeholder="邮箱" th:value="${user.email}"/>
+										name="sysUser.email" placeholder="邮箱" th:value="${user.email}"/>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="add_mobile" class="col-sm-3 control-label">手机</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" id="add_mobile"
-										name="mobile" placeholder="手机" th:value="${user.mobile}"/>
+										name="sysUser.mobile" placeholder="手机" th:value="${user.mobile}"/>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">性别</label>
 								<div class="col-sm-8">
-									<label class="radio-inline" active> <input type="radio"
-										name="sex" value="1" th:field="${user.sex}"> 男
-									</label> <label class="radio-inline"> <input type="radio"
-										name="sex" value="0" th:field="${user.sex}"/> 女
+									<label class="radio-inline" >
+										<input name="sysUser.sex"  value="1" type="radio" th:checked="*{user.sex} == 1"/> 男
+									</label> <label class="radio-inline">
+										<input name="sysUser.sex" value="0"  type="radio" th:checked="*{user.sex} == 0"/> 女
 									</label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">状态</label>
 								<div class="col-sm-8">
-									<label class="radio-inline" active> <input type="radio"
-										name="status" value="1" th:field="${user.status}"> 正常
-									</label> <label class="radio-inline"> <input type="radio"
-										name="status" value="0" th:field="${user.status}"/> 禁用
+									<label class="radio-inline" >
+								    	<input type="radio"   name="sysUser.status" value="1" th:checked="*{user.status} == 1"/> 正常
+									</label> 
+									<label class="radio-inline">
+										<input type="radio"   name="sysUser.status" value="0" th:checked="*{user.status} == 0"/> 禁用
 									</label>
 								</div>
 							</div>
@@ -137,9 +138,8 @@ form label.error {
 							<div class="form-group">
 								<label class="col-sm-3 control-label">角色</label>
 								<div class="col-sm-8">
-									<label class="checkbox-inline">
-										<!-- th:each="role:${roles}" --> <input name="role"
-										type="checkbox">超级管理员<!-- th:value="${role.roleId}" th:text="${role.roleName}" th:checked="${role.roleSign}" -->
+									<label class="checkbox-inline" th:each="role:${roles}"> 
+										<input name="sysUser.role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}" th:checked="${role.roleSign}" >
 									</label>
 								</div>
 							</div>
@@ -169,8 +169,22 @@ form label.error {
 			$("#edit_user_form")[0].reset();
 		});
 	});
-
+	
+	function getCheckedRoles(){
+		var roleIds = "";
+		$("input:checkbox[name='sysUser.role']:checked").each(function(i){
+			if(0==i){
+				roleIds = $(this).val();
+			}else{
+				roleIds += (","+$(this).val());
+			}
+		})
+		return roleIds;
+	}
+	
 	function updateUser() {
+		$("#roleIds").val(getCheckedRoles());
+		
 		$.ajax({
 			url:ctx+"sys/user/update",
 			dataType:'json',

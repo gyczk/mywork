@@ -289,15 +289,14 @@
   </update>
   
   <select id="selectMenuList" resultMap="BaseResultMap" parameterType="java.lang.Long">
-  	 	select 
-		
-	      distinct
-	   
- 		f.*
-		from sys_user a LEFT JOIN sys_user_role b ON a.user_id = b.user_id 
-		LEFT JOIN sys_role c ON b.role_id = c.role_id LEFT JOIN sys_role_menu d 
-		on c.role_id = d.role_id left join sys_menu f on d.menu_id = f.menu_id
-		where a.user_id =  #{userId,jdbcType=BIGINT}
+		  
+	select DISTINCT a.* from sys_menu a 
+	LEFT JOIN sys_role_menu  b on a.menu_id = b.menu_id 
+	LEFT JOIN sys_role c on b.role_id = c.role_id 
+	LEFT JOIN sys_user_role d on c.role_id = d.role_id
+	LEFT JOIN sys_user e on d.user_id = e.user_id 
+	where d.user_id =  #{userId,jdbcType=BIGINT}
+  	 	
   </select>
   
   <select id="getMenuListByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
