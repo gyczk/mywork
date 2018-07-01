@@ -240,4 +240,15 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
+  
+  <select id="getRoleListByCondition" parameterType="com.czk.domain.SysRole" resultMap="BaseResultMap">
+  	select * from sys_role
+  	<where>
+  		<if test="roleName != null">
+  			and name like concat('%',#{roleName},'%')
+  		</if>
+  		
+  	</where>
+  </select>
+  
 </mapper>

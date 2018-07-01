@@ -10,6 +10,9 @@ import com.czk.dao.SysRoleMapper;
 import com.czk.dao.SysUserRoleMapper;
 import com.czk.domain.SysRole;
 import com.czk.service.SysRoleService;
+import com.czk.utils.PageUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
 	
@@ -36,6 +39,15 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Override
 	public List<SysRole> getRoleList() {
 		return sysRoleMapper.selectByExample(null);
+	}
+	@Override
+	public PageUtils<SysRole> getRoleList(PageUtils<SysRole> pageUtils, SysRole condition) {
+		PageHelper.startPage(pageUtils.getOffset(), pageUtils.getLimit());
+		List<SysRole> list = sysRoleMapper.getRoleListByCondition(condition);
+		PageInfo<SysRole> pageInfo = new PageInfo<>(list);
+		pageUtils.setRows(list);
+		pageUtils.setTotal((int) pageInfo.getTotal());
+		return pageUtils;
 	}
 	
 }
