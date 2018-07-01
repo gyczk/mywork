@@ -6,8 +6,6 @@
 <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}" />
 <title>用户列表</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title></title>
-
 <script type="text/javascript" src="../../../js/jquery.min.js"
 	th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript"
@@ -22,6 +20,12 @@
 	th:src="@{/js/layer/layer.js}"></script>
 <script type="text/javascript" src="../../../js/jquery.validate.min.js"
 	th:src="@{/js/jquery.validate.min.js}"></script>
+<script type="text/javascript" src="../../../js/jstree.js"
+	th:src="@{/js/jstree.js}"></script>
+<script type="text/javascript" src="../../../js/jstree.checkbox.js"
+	th:src="@{/js/jstree.checkbox.js}"></script>
+<script src="/js/plugins/jqTreeGrid/jquery.treegrid.extension.js" th:src="@{/js/plugins/jqTreeGrid/jquery.treegrid.extension.js}"></script>
+
 <script type="text/javascript" src="../../../js/messages_zh.min.js"
 	th:src="@{/js/messages_zh.min.js}"></script>
 <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.min.css"
@@ -30,6 +34,11 @@
 	th:href="@{/bootstrap/css/bootstrap-table.css}" />
 <link rel="stylesheet" href="../../../css/font-awesome.css"
 	th:href="@{/css/font-awesome.css}" />
+<link href="/css/plugins/jqTreeGrid/jquery.treegrid.css"
+	  th:href="@{/css/plugins/jqTreeGrid/jquery.treegrid.css}" rel="stylesheet">
+<link href="/css/plugins/jsTree/style.min.css"
+	  th:href="@{/css/plugins/jsTree/style.min.css}" rel="stylesheet">
+
 <style type="text/css">
 .form_div {
 	margin-top: 20px;
@@ -70,76 +79,24 @@ form label.error {
 						<form class="form-horizontal m-t" id="add_user_form">
 							<!--<input type="hidden" id="add_cust_id" name="userId" />-->
 							<div class="form-group">
-								<label for="add_name" class="col-sm-3 control-label">姓名</label>
+								<label for="add_name" class="col-sm-3 control-label">角色名</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" id="add_name"
-										name="sysUser.name" placeholder="姓名" />
+										name="sysRole.name" placeholder="角色名" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="add_username" class="col-sm-3 control-label">用戶名</label>
+								<label for="add_remark" class="col-sm-3 control-label">备注</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" id="add_username"
-										name="sysUser.username" placeholder="用戶名" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="add_password" class="col-sm-3 control-label">密码</label>
-								<div class="col-sm-8">
-									<input type="password" class="form-control" id="add_password"
-										name="sysUser.password" placeholder="密码" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="add_confirm_password" class="col-sm-3 control-label">确认密码</label>
-								<div class="col-sm-8">
-									<input type="password" class="form-control"
-										id="add_confirm_password" name="confirm_password"
-										placeholder="确认密码" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="add_email" class="col-sm-3 control-label">邮箱</label>
-								<div class="col-sm-8">
-									<input type="email" class="form-control" id="add_email"
-										name="sysUser.email" placeholder="邮箱" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="add_mobile" class="col-sm-3 control-label">手机</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" id="add_mobile"
-										name="sysUser.mobile" placeholder="手机" />
+									<input type="text" class="form-control" id="add_remark"
+										name="sysRole.remark" placeholder="备注" />
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">性别</label>
+								<label class="col-sm-3 control-label">菜单权限：</label>
 								<div class="col-sm-8">
-									<label class="radio-inline" active> <input type="radio"
-										name="sysUser.sex" value="1" checked="checked"> 男
-									</label> <label class="radio-inline"> <input type="radio"
-										name="sysUser.sex" value="0" /> 女
-									</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">状态</label>
-								<div class="col-sm-8">
-									<label class="radio-inline" active> <input type="radio"
-										name="sysUser.status" value="1" checked="checked"> 正常
-									</label> <label class="radio-inline"> <input type="radio"
-										name="sysUser.status" value="0" /> 禁用
-									</label>
-								</div>
-							</div>
-							<input type="hidden" name="roleIds" id="roleIds">
-							<div class="form-group">
-								<label class="col-sm-3 control-label">角色</label>
-								<div class="col-sm-8">
-									<label class="checkbox-inline" th:each="role:${roles}" > 
-										<input name="sysUser.role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}"  >
-									</label>
+									<div id="menuTree"></div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -161,6 +118,7 @@ form label.error {
 </body>
 <script type="text/javascript">
 	$(document).ready(function() {
+        getMenuTreeData();
 		// 初始化内容
 		var validator = validateRule();
 		$("#resetButton").click(function() {
@@ -171,7 +129,7 @@ form label.error {
 	
 	function getCheckedRoles(){
 		var roleIds = "";
-		$("input:checkbox[name='sysUser.role']:checked").each(function(i){
+		$("input:checkbox[name='sysRole.role']:checked").each(function(i){
 			if(0==i){
 				roleIds = $(this).val();
 			}else{
@@ -216,10 +174,10 @@ form label.error {
 		var icon = "<i class='fa fa-times-circle'></i> ";
 		var validator = $("#add_user_form").validate({
 			rules : {
-				"sysUser.name" : {
+				"sysRole.name" : {
 					required : true
 				},
-				"sysUser.username" : {
+				"sysRole.username" : {
 					required : true,
 					minlength : 2,
 					remote : {
@@ -233,7 +191,7 @@ form label.error {
 						}
 					}
 				},
-				"sysUser.password" : {
+				"sysRole.password" : {
 					required : true,
 					minlength : 6
 				},
@@ -242,11 +200,11 @@ form label.error {
 					minlength : 6,
 					equalTo : "#add_password"
 				},
-				"sysUser.email" : {
+				"sysRole.email" : {
 					required : false,
 					email : true
 				},
-				"sysUser.mobile" : {
+				"sysRole.mobile" : {
 					required : false,
 					minlength : 11,
 					maxlength : 11,
@@ -254,15 +212,15 @@ form label.error {
 				}
 			},
 			messages : {
-				"sysUser.name" : {
+				"sysRole.name" : {
 					required : icon + "请输入姓名"
 				},
-				"sysUser.username" : {
+				"sysRole.username" : {
 					required : icon + "请输入您的用户名",
 					minlength : icon + "用户名必须两个字符以上",
 					remote : icon + "用户名已经存在"
 				},
-				"sysUser.password" : {
+				"sysRole.password" : {
 					required : icon + "请输入您的密码",
 					minlength : icon + "密码必须6个字符以上"
 				},
@@ -271,11 +229,11 @@ form label.error {
 					minlength : icon + "密码必须6个字符以上",
 					equalTo : icon + "两次输入的密码不一致"
 				},
-				"sysUser.email" : {
+				"sysRole.email" : {
 					required : icon + "请输入邮箱",
 					email : icon + "请输入正确的邮箱"
 				},
-				"sysUser.mobile" : {
+				"sysRole.mobile" : {
 					minlength : icon + "最少11位",
 					maxlength : icon + "最多11位",
 					isphoneNum : icon + "请输入正确的手机号"
@@ -297,6 +255,27 @@ form label.error {
 	function restForm() {
 		$("#add_user_form")[0].reset();
 	}
+	
+	function getMenuTreeData() {
+        $.ajax({
+            type : "POST",
+            url : "getAllMenu",
+            success : function(menuTree) {
+                loadMenuTree(menuTree);
+            }
+        });
+    }
+    function  loadMenuTree(menuTree) {
+        $('#menuTree').jstree({
+            'core' : {
+                'data' : menuTree
+            },
+            "checkbox" : {
+                "three_state" : true,
+            },
+            "plugins" : [ "wholerow", "checkbox" ]
+        });
+    }
 </script>
 
 </html>

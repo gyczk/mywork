@@ -9,4 +9,5 @@ public interface SysMeneService {
 
 	List<Tree<SysMenu>> getSysMenu(Long userId);
 
+    List<Tree<SysMenu>> getAllMenu();
 }

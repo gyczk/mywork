@@ -19,6 +19,14 @@ public class SysMenuServiceImpl implements SysMeneService {
 	@Override
 	public  List<Tree<SysMenu>> getSysMenu(Long userId) {
 		List<SysMenu> menus = sysMenuMapper.getMenuListByUserId(userId);//查询左侧系统菜单
+		//提取公共方法
+		//组装数据
+		List<Tree<SysMenu>> trees = getDataTreeList(menus);
+		List<Tree<SysMenu>> menuList = buildListTree(trees,"0");
+		return menuList;
+	}
+
+	private List<Tree<SysMenu>> getDataTreeList(List<SysMenu> menus) {
 		List<Tree<SysMenu>> trees = new ArrayList<>();
 		for(SysMenu sysmenu :menus){
 			Tree<SysMenu> tree = new Tree<SysMenu>();
@@ -31,11 +39,26 @@ public class SysMenuServiceImpl implements SysMeneService {
 			tree.setAttributes(attributes);
 			trees.add(tree);
 		}
-		
-		List<Tree<SysMenu>> menuList = buildListTree(trees,"0");
-		return menuList;
+		return trees;
 	}
-	
+
+	@Override
+	public List<Tree<SysMenu>> getAllMenu() {
+		List<SysMenu> menus = sysMenuMapper.selectByExample(null);
+		List<Tree<SysMenu>> trees = getDataTreeList(menus);
+		List<Tree<SysMenu>> menuList = buildListTree(trees,"0");
+		//添加顶级菜单
+		List<Tree<SysMenu>> allMenuList = new ArrayList<Tree<SysMenu>>();
+		Tree<SysMenu> tree = new Tree<SysMenu>();
+		tree.setText("顶级节点");
+		tree.setId(-1L);
+		tree.setChildren(menuList);
+		allMenuList.add(tree);
+
+
+		return allMenuList;
+	}
+
 	private  List<Tree<SysMenu>> buildListTree(List<Tree<SysMenu>> trees, String rootId) {
 		if(trees==null){
 			return null;
