@@ -52,6 +52,9 @@ public class SysMenuServiceImpl implements SysMeneService {
 		Tree<SysMenu> tree = new Tree<SysMenu>();
 		tree.setText("顶级节点");
 		tree.setId(-1L);
+		Map<String, Object> state = new HashMap<>(16);
+		state.put("opened", true);
+		tree.setState(state);
 		tree.setChildren(menuList);
 		allMenuList.add(tree);
 

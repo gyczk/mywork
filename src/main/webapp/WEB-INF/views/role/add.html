@@ -124,6 +124,9 @@ form label.error {
 		$("#resetButton").click(function() {
 			validator.resetForm();
 			$("#add_user_form")[0].reset();
+
+            var instance = $('#menuTree').jstree(true);
+            instance.deselect_all();
 		});
 	});
 	

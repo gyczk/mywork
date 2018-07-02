@@ -8,7 +8,7 @@ import java.util.Map;
 public class Tree<T> implements Serializable{
 	private Long id;
 	private String text;
-	private String state;
+	private Map<String, Object> state;
 	private boolean checked = false;
 	private Map<String,Object> attributes;
 	private List<Tree<T>> children = new ArrayList<>();
@@ -33,12 +33,23 @@ public class Tree<T> implements Serializable{
 	public void setText(String text) {
 		this.text = text;
 	}
-	public String getState() {
+
+	public Map<String, Object> getState() {
 		return state;
 	}
-	public void setState(String state) {
+
+	public void setState(Map<String, Object> state) {
 		this.state = state;
 	}
+
+	public boolean isHasChildren() {
+		return hasChildren;
+	}
+
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
+	}
+
 	public boolean isChecked() {
 		return checked;
 	}
