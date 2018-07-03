@@ -76,8 +76,9 @@ form label.error {
 			<div class="col-sm-12">
 				<div class="ibox float-e-margins">
 					<div class="ibox-content">
-						<form class="form-horizontal m-t" id="add_user_form">
+						<form class="form-horizontal m-t" id="add_role_form">
 							<!--<input type="hidden" id="add_cust_id" name="userId" />-->
+							<input id="menuIds" name="menuIds" type="hidden">
 							<div class="form-group">
 								<label for="add_name" class="col-sm-3 control-label">角色名</label>
 								<div class="col-sm-8">
@@ -123,34 +124,32 @@ form label.error {
 		var validator = validateRule();
 		$("#resetButton").click(function() {
 			validator.resetForm();
-			$("#add_user_form")[0].reset();
+			$("#add_role_form")[0].reset();
 
             var instance = $('#menuTree').jstree(true);
             instance.deselect_all();
 		});
 	});
 	
-	function getCheckedRoles(){
-		var roleIds = "";
-		$("input:checkbox[name='sysRole.role']:checked").each(function(i){
-			if(0==i){
-				roleIds = $(this).val();
-			}else{
-				roleIds += (","+$(this).val());
-			}
-		})
-		return roleIds;
+	function getCheckedMenus(){
+        var instance = $('#menuTree').jstree(true);
+        var menuIds = instance.get_selected();//获取完全选中的节点
+		//获取半选中的节点
+		$("#menuTree").find(".jstree-undetermined").each(function (i,element) {
+			menuIds.push($(element).closest(".jstree-node").attr("id"));
+        });
+		return menuIds;
 	}
-	function saveUser() {
-		$("#roleIds").val(getCheckedRoles());
+	function saveRole() {
+		$("#menuIds").val(getCheckedMenus());
 		$.ajax({
 			url:'add',
 			dataType:'json',
 			method:'post',
-			data : $("#add_user_form").serialize(),
+			data : $("#add_role_form").serialize(),
 			success:function(data){
 				if(data.code==0){
-					parent.layer.msg("添加用户成功");
+					parent.layer.msg("添加角色成功");
 					parent.reLoad();
 					var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 					parent.layer.close(index); //再执行关闭   
@@ -165,85 +164,30 @@ form label.error {
 			
 		});
 	}
-	//自定义手机号验证
-	jQuery.validator.addMethod("isphoneNum", function(value, element) {
-		//		debugger
-		var length = value.length;
-		var mobile = /^1[3|5|8]{1}[0-9]{9}$/;
-		return this.optional(element) || (length == 11 && mobile.test(value));
-	}, "请正确填写您的手机号码");
+
 
 	function validateRule() {
 		var icon = "<i class='fa fa-times-circle'></i> ";
-		var validator = $("#add_user_form").validate({
+		var validator = $("#add_role_form").validate({
 			rules : {
 				"sysRole.name" : {
 					required : true
 				},
-				"sysRole.username" : {
-					required : true,
-					minlength : 2,
-					remote : {
-						url : "isExist",
-						type : "post",
-						dataType : "json",
-						data : {
-							username : function() {
-								return $("#add_username").val();
-							}
-						}
-					}
-				},
-				"sysRole.password" : {
-					required : true,
-					minlength : 6
-				},
-				confirm_password : {
-					required : true,
-					minlength : 6,
-					equalTo : "#add_password"
-				},
-				"sysRole.email" : {
+				"sysRole.remark" : {
 					required : false,
-					email : true
-				},
-				"sysRole.mobile" : {
-					required : false,
-					minlength : 11,
-					maxlength : 11,
-					isphoneNum : true
+
 				}
 			},
 			messages : {
 				"sysRole.name" : {
-					required : icon + "请输入姓名"
+					required : icon + "请输入角色名"
 				},
-				"sysRole.username" : {
-					required : icon + "请输入您的用户名",
-					minlength : icon + "用户名必须两个字符以上",
-					remote : icon + "用户名已经存在"
-				},
-				"sysRole.password" : {
-					required : icon + "请输入您的密码",
-					minlength : icon + "密码必须6个字符以上"
-				},
-				confirm_password : {
-					required : icon + "请再次输入密码",
-					minlength : icon + "密码必须6个字符以上",
-					equalTo : icon + "两次输入的密码不一致"
-				},
-				"sysRole.email" : {
-					required : icon + "请输入邮箱",
-					email : icon + "请输入正确的邮箱"
-				},
-				"sysRole.mobile" : {
-					minlength : icon + "最少11位",
-					maxlength : icon + "最多11位",
-					isphoneNum : icon + "请输入正确的手机号"
+				"sysRole.remark" : {
+					required : icon + "请输入备注"
 				}
 			},
 			submitHandler : function(form) {
-				saveUser();
+                saveRole();
 			}
 		});
 		return validator;
@@ -256,7 +200,7 @@ form label.error {
 	}
 
 	function restForm() {
-		$("#add_user_form")[0].reset();
+		$("#add_role_form")[0].reset();
 	}
 	
 	function getMenuTreeData() {
