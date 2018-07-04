@@ -2,6 +2,7 @@ package com.czk.action;
 
 import com.czk.domain.*;
 import com.czk.service.SysMeneService;
+import com.czk.service.SysRoleMenuService;
 import com.czk.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ public class SysRoleAction {
 
 	@Autowired
 	SysMeneService sysMeneService;
+	@Autowired
+	SysRoleMenuService sysRoleMenuService;
 
 	@GetMapping("")
 	public String roleManage(){
@@ -46,6 +49,14 @@ public class SysRoleAction {
 		List<Tree<SysMenu>> menus = sysMeneService.getAllMenu();
 		return menus;
 	}
+	@PostMapping("/getAllMenuWithPermission")
+	@ResponseBody
+	public List<Tree<SysMenu>> getAllMenuWithPermission(Long roleId){
+		List<Tree<SysMenu>> menus = sysMeneService.getAllMenuWithPermission(roleId);
+		return menus;
+	}
+
+
 
 	@PostMapping("/add")
 	@ResponseBody
@@ -54,6 +65,24 @@ public class SysRoleAction {
 		if(flag){
 			return R.ok();
 
+		}
+		return R.error();
+	}
+
+	@GetMapping("/edit_page/{roleId}")
+	public String edit_page(@PathVariable("roleId")Long id,Model model){
+		SysRole role = sysRoleService.getRoleByRoleId(id);
+		model.addAttribute("role",role);
+		return "role/edit";
+
+	}
+
+	@PostMapping("/update")
+	@ResponseBody
+	public R update(SysRoleVo roleVo){
+		boolean flag =sysRoleService .update(roleVo);
+		if(flag){
+			return R.ok();
 		}
 		return R.error();
 	}

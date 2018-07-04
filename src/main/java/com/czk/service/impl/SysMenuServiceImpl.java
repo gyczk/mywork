@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.czk.dao.SysRoleMenuMapper;
+import com.czk.domain.SysRoleMenuExample;
+import com.czk.service.SysRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,9 @@ import com.czk.service.SysMeneService;
 public class SysMenuServiceImpl implements SysMeneService {
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
+
+	@Autowired
+	private SysRoleMenuService sysRoleMenuService;
 	@Override
 	public  List<Tree<SysMenu>> getSysMenu(Long userId) {
 		List<SysMenu> menus = sysMenuMapper.getMenuListByUserId(userId);//查询左侧系统菜单
@@ -60,6 +66,36 @@ public class SysMenuServiceImpl implements SysMeneService {
 
 
 		return allMenuList;
+	}
+
+	@Override
+	public List<Tree<SysMenu>> getAllMenuWithPermission(Long roleId) {
+		//获取角色id对应的权限id
+		List<Long> menuIds= sysRoleMenuService.getAllMenuIdByRoleId(roleId);
+		List<Tree<SysMenu>> allMenu = getAllMenu();
+		//递归设置选中状态
+		setChecked(allMenu,menuIds);
+		/*for(Tree<SysMenu> tree : allMenu){
+			setChecked();
+		}*/
+
+
+		return allMenu;
+	}
+
+	private void setChecked(List<Tree<SysMenu>> allMenu, List<Long> menuIds) {
+		for(Tree<SysMenu> tree:allMenu){
+			if(tree.getChildren().size()>0){
+				setChecked(tree.getChildren(),menuIds);
+			}else{
+				if(menuIds.contains(tree.getId())){
+					Map<String, Object> state = new HashMap<>(16);
+					state.put("selected", true);
+					tree.setState(state);
+				}
+			}
+		}
+
 	}
 
 	private  List<Tree<SysMenu>> buildListTree(List<Tree<SysMenu>> trees, String rootId) {

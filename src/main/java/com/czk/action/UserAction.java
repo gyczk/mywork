@@ -87,7 +87,6 @@ public class UserAction {
 	@PostMapping("/update")
 	@ResponseBody
 	public R update(SysUserVo userVo){
-		SysUser user = userVo.getSysUser();
 		boolean flag = userService.update(userVo);
 		if(flag){
 			return R.ok();

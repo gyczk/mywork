@@ -15,4 +15,8 @@ public interface SysRoleService {
 	PageUtils<SysRole> getRoleList(PageUtils<SysRole> pageUtils, SysRole condition);
 
     boolean addRole(SysRoleVo sysRoleVo);
+
+    SysRole getRoleByRoleId(Long id);
+
+	boolean update(SysRoleVo roleVo);
 }

@@ -188,4 +188,11 @@
 
 
   </insert>
+
+  <select id="getMenuIDByRoleId" parameterType="Long" resultType="java.lang.Long">
+    select menu_id from sys_role_menu
+    where role_id = #{roleId}
+
+
+  </select>
 </mapper>

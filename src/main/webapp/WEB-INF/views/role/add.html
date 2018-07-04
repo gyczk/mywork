@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}" />
-<title>用户列表</title>
+<title>角色增加</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="../../../js/jquery.min.js"
 	th:src="@{/js/jquery.min.js}"></script>
@@ -170,11 +170,11 @@ form label.error {
 		var icon = "<i class='fa fa-times-circle'></i> ";
 		var validator = $("#add_role_form").validate({
 			rules : {
-				"sysRole.name" : {
+				"sysRole.roleName" : {
 					required : true
 				},
 				"sysRole.remark" : {
-					required : false,
+					required : false
 
 				}
 			},

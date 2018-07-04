@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import com.czk.dao.SysRoleMenuMapper;
 import com.czk.domain.SysRoleMenu;
+import com.czk.domain.SysRoleMenuExample;
 import com.czk.domain.SysRoleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,11 +75,45 @@ public class SysRoleServiceImpl implements SysRoleService {
 		if(list.size()>0){
 			roleMenucount = rolemenuMapper.batachInsert(list);
 		}
-		if(roleCount>0&&roleCount>=0){
+		if(roleCount>0&&roleMenucount>=0){
 			return true;
 		}
 
 
+		return false;
+	}
+
+	@Override
+	public SysRole getRoleByRoleId(Long id) {
+		SysRole role = sysRoleMapper.selectByPrimaryKey(id);
+		return role;
+	}
+
+	@Override
+	public boolean update(SysRoleVo roleVo) {
+		int roleCount = sysRoleMapper.updateByPrimaryKey(roleVo.getSysRole());
+		Long roleId = roleVo.getSysRole().getRoleId();
+		//先删除原有的角色菜单关联数据
+		SysRoleMenuExample example = new SysRoleMenuExample();
+		SysRoleMenuExample.Criteria criteria = example.createCriteria();
+		criteria.andRoleIdEqualTo(roleId);
+		rolemenuMapper.deleteByExample(example);
+
+		List<SysRoleMenu> list = new ArrayList<>();
+		List<Long>  menuIds = roleVo.getMenuIds();
+		for(Long menuId:menuIds){
+			SysRoleMenu menu = new SysRoleMenu();
+			menu.setRoleId(roleId);
+			menu.setMenuId(menuId);
+			list.add(menu);
+		}
+		int menuCount = 0;
+		if(list.size()>0){
+			menuCount = rolemenuMapper.batachInsert(list);
+		}
+		if(roleCount>0&&menuCount>=0){
+			return true;
+		}
 		return false;
 	}
 
