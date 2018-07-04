@@ -27,4 +27,6 @@ public interface SysRoleMenuMapper {
     int updateByPrimaryKeySelective(SysRoleMenu record);
 
     int updateByPrimaryKey(SysRoleMenu record);
+
+    int batachInsert(List<SysRoleMenu> list);
 }

@@ -101,7 +101,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.czk.domain.SysRole" >
+  <insert id="insert" parameterType="com.czk.domain.SysRole" useGeneratedKeys="true" keyProperty="roleId">
     insert into sys_role (role_id, role_name, role_sign, 
       remark, user_id_create, gmt_create, 
       gmt_modified)

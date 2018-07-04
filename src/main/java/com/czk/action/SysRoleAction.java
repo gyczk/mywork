@@ -1,14 +1,13 @@
 package com.czk.action;
 
-import com.czk.domain.SysMenu;
-import com.czk.domain.Tree;
+import com.czk.domain.*;
 import com.czk.service.SysMeneService;
+import com.czk.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.czk.domain.SysRole;
 import com.czk.service.SysRoleService;
 import com.czk.utils.PageUtils;
 
@@ -46,5 +45,16 @@ public class SysRoleAction {
 	public List<Tree<SysMenu>> getAllMenu(){
 		List<Tree<SysMenu>> menus = sysMeneService.getAllMenu();
 		return menus;
+	}
+
+	@PostMapping("/add")
+	@ResponseBody
+	public R add(SysRoleVo sysRoleVo){
+		boolean flag = sysRoleService.addRole(sysRoleVo);
+		if(flag){
+			return R.ok();
+
+		}
+		return R.error();
 	}
 }

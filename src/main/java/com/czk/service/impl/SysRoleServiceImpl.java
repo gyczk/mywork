@@ -1,8 +1,12 @@
 package com.czk.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.czk.dao.SysRoleMenuMapper;
+import com.czk.domain.SysRoleMenu;
+import com.czk.domain.SysRoleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 	
 	@Autowired
 	private SysUserRoleMapper userRoleMapper;
+
+	@Autowired
+	private SysRoleMenuMapper rolemenuMapper;
 	@Override
 	public List<SysRole> getRoleList(Long id) {
 		List<SysRole> list = sysRoleMapper.selectByExample(null);
@@ -49,5 +56,30 @@ public class SysRoleServiceImpl implements SysRoleService {
 		pageUtils.setTotal((int) pageInfo.getTotal());
 		return pageUtils;
 	}
-	
+
+	@Override
+	public boolean addRole(SysRoleVo sysRoleVo) {
+		SysRole sysRole = sysRoleVo.getSysRole();
+		int roleCount = sysRoleMapper.insert(sysRole);
+		Long roleId = sysRole.getRoleId();
+		List<SysRoleMenu> list = new ArrayList<>();
+		List<Long> menuIds = sysRoleVo.getMenuIds();
+		for(Long menuId:menuIds){
+			SysRoleMenu roleMenu = new SysRoleMenu();
+			roleMenu.setRoleId(roleId);
+			roleMenu.setMenuId(menuId);
+			list.add(roleMenu);
+		}
+		int roleMenucount = 0;
+		if(list.size()>0){
+			roleMenucount = rolemenuMapper.batachInsert(list);
+		}
+		if(roleCount>0&&roleCount>=0){
+			return true;
+		}
+
+
+		return false;
+	}
+
 }

@@ -178,4 +178,14 @@
       menu_id = #{menuId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="batachInsert">
+    insert into sys_role_menu (role_id,menu_id) values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.roleId},#{item.menuId})
+
+    </foreach>
+
+
+  </insert>
 </mapper>
