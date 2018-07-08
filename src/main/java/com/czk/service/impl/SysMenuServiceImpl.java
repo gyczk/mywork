@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.czk.dao.SysRoleMenuMapper;
-import com.czk.domain.SysRoleMenuExample;
 import com.czk.service.SysRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +12,9 @@ import org.springframework.stereotype.Service;
 import com.czk.dao.SysMenuMapper;
 import com.czk.domain.SysMenu;
 import com.czk.domain.Tree;
-import com.czk.service.SysMeneService;
+import com.czk.service.SysMenuService;
 @Service
-public class SysMenuServiceImpl implements SysMeneService {
+public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
 
@@ -81,6 +79,11 @@ public class SysMenuServiceImpl implements SysMeneService {
 
 
 		return allMenu;
+	}
+
+	@Override
+	public List<SysMenu> getListMenu() {
+		return sysMenuMapper.selectByExample(null);
 	}
 
 	private void setChecked(List<Tree<SysMenu>> allMenu, List<Long> menuIds) {

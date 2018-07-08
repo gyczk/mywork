@@ -1,13 +1,10 @@
 package com.czk.action;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -22,17 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.socket.WebSocketSession;
 
 import com.czk.domain.SysFile;
 import com.czk.domain.SysMenu;
 import com.czk.domain.SysUser;
 import com.czk.domain.Tree;
 import com.czk.service.SysFileService;
-import com.czk.service.SysMeneService;
+import com.czk.service.SysMenuService;
 import com.czk.service.impl.FilterChainDefinitionsService;
 import com.czk.utils.R;
-import com.czk.utils.UserUtils;
 import com.czk.websocket.MyHandler;
 
 
@@ -49,7 +44,7 @@ public class SystemAction {
 	private MyHandler myHandler;
 	
 	@Autowired
-	private SysMeneService sysMenuService;
+	private SysMenuService sysMenuService;
 	
 	@GetMapping("/")
 	public String login(){

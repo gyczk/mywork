@@ -1,7 +1,7 @@
 package com.czk.action;
 
 import com.czk.domain.*;
-import com.czk.service.SysMeneService;
+import com.czk.service.SysMenuService;
 import com.czk.service.SysRoleMenuService;
 import com.czk.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class SysRoleAction {
 	SysRoleService sysRoleService;
 
 	@Autowired
-	SysMeneService sysMeneService;
+	SysMenuService sysMenuService;
 	@Autowired
 	SysRoleMenuService sysRoleMenuService;
 
@@ -46,13 +46,13 @@ public class SysRoleAction {
 	@PostMapping("/getAllMenu")
 	@ResponseBody
 	public List<Tree<SysMenu>> getAllMenu(){
-		List<Tree<SysMenu>> menus = sysMeneService.getAllMenu();
+		List<Tree<SysMenu>> menus = sysMenuService.getAllMenu();
 		return menus;
 	}
 	@PostMapping("/getAllMenuWithPermission")
 	@ResponseBody
 	public List<Tree<SysMenu>> getAllMenuWithPermission(Long roleId){
-		List<Tree<SysMenu>> menus = sysMeneService.getAllMenuWithPermission(roleId);
+		List<Tree<SysMenu>> menus = sysMenuService.getAllMenuWithPermission(roleId);
 		return menus;
 	}
 
