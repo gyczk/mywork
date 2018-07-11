@@ -82,7 +82,7 @@
                     }
                     tr.append(td);
                 }else{
-                    var td = $('<td style="'+((column.width)?('width:'+column.width):'')+'"></td>');
+                    var td = $('<td style="'+((column.width)?('width:'+column.width)+';':'')+((column.align)?('text-align:'+column.align):'')+'"></td>');
                     // 增加formatter渲染
                     if (column.formatter) {
                         td.html(column.formatter.call(this, item, index));
