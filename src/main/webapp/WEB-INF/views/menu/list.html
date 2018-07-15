@@ -134,29 +134,48 @@
 			}
 
 			function reLoad() {
-				$('#table').bootstrapTable('refresh');
+				load();
 			}
 
-			function add() {
+			function add(pid) {
 				layer.open({
 					type: 2,
-					title: '添加角色',
+					title: '添加菜单 ',
 					maxmin: true,
 					shadeClose: false, // 点击遮罩关闭层
 					area: ['800px', '620px'],
-					content: 'role/add_page'
+					content: 'menu/add_page/'+pid,
 				});
 			}
 
-            function edit(roleId){
+            function edit(id){
                 layer.open({
                     type: 2,
                     title: '添加用户',
                     maxmin: true,
                     shadeClose: false, // 点击遮罩关闭层
                     area: ['800px', '620px'],
-                    content: 'role/edit_page/'+roleId
+                    content: 'menu/edit_page/'+id,
                 });
+
+            }
+            function remove(id){
+                layer.confirm('确定要删除选中的记录？', {
+                    btn : [ '确定', '取消' ]
+                }, function() {
+                    $.ajax({
+                        url : "menu/del/"+id,
+                        type : "post",
+                        success : function(data) {
+                            if (data.code == 0) {
+                                layer.msg("删除成功");
+                                reLoad();
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                })
 
             }
 
@@ -165,19 +184,26 @@
 		</script>
 	</head>
 
-	<body>
-		<div class="top">
-			<!-- 提供额外的视觉效果，标识一组按钮中的原始动作 -->
-			<button type="button" class="btn btn-primary" onclick="add()">
-				增加
-			</button>
-			<button type="button" class="btn btn-danger">
-				删除
-			</button>
+	<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="top">
+						<!-- 提供额外的视觉效果，标识一组按钮中的原始动作 -->
+						<button type="button" class="btn btn-primary" onclick="add('0')">
+							增加
+						</button>
+						<button type="button" class="btn btn-danger">
+							删除
+						</button>
+					</div>
+					<table id="table" data-mobile-responsive="true"></table>
+					</table>
+				</div>
+			</div>
 		</div>
-		<table id="table" data-mobile-responsive="true"></table>
-
-		
+	</div>
 
 	</body>
 

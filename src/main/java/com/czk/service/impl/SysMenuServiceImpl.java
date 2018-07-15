@@ -86,6 +86,29 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return sysMenuMapper.selectByExample(null);
 	}
 
+	@Override
+	public SysMenu getMenuById(Long id) {
+		return sysMenuMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public int save(SysMenu sysMenu) {
+		return sysMenuMapper.insert(sysMenu);
+	}
+
+	@Override
+	public int update(SysMenu sysMenu) {
+		return sysMenuMapper.updateByPrimaryKey(sysMenu);
+	}
+
+	@Override
+	public int del(Long id) {
+		int count =sysMenuMapper.deleteByPrimaryKey(id);
+		//删除关联表数据
+		sysRoleMenuService.deleteByMenuId(id);
+		return count;
+	}
+
 	private void setChecked(List<Tree<SysMenu>> allMenu, List<Long> menuIds) {
 		for(Tree<SysMenu> tree:allMenu){
 			if(tree.getChildren().size()>0){

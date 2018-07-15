@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface SysRoleMenuService {
     List<Long> getAllMenuIdByRoleId(Long roleId);
+
+    int deleteByMenuId(Long id);
 }

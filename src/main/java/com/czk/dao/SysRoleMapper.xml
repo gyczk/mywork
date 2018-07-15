@@ -245,7 +245,7 @@
   	select * from sys_role
   	<where>
   		<if test="roleName != null">
-  			and name like concat('%',#{roleName},'%')
+  			and role_name like concat('%',#{roleName},'%')
   		</if>
   		
   	</where>

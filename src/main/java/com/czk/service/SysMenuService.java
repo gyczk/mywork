@@ -14,4 +14,12 @@ public interface SysMenuService {
     List<Tree<SysMenu>> getAllMenuWithPermission(Long roleId);
 
     List<SysMenu> getListMenu();
+
+    SysMenu getMenuById(Long id);
+
+    int save(SysMenu sysMenu);
+
+    int update(SysMenu sysMenu);
+
+    int del(Long id);
 }

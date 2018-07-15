@@ -47,7 +47,7 @@
 			<version>4.9</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-test</artifactId> 
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-test</artifactId>
 			<version>${spring.version}</version> <scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -190,7 +190,7 @@
 			<version>1.4</version>
 		</dependency>
 		<!-- jfreechar -->
-		<!-- <dependency> <groupId>jfree</groupId> <artifactId>jfreechart</artifactId> 
+		<!-- <dependency> <groupId>jfree</groupId> <artifactId>jfreechart</artifactId>
 			<version>1.0.13</version> </dependency> -->
 
 		<dependency>
@@ -260,7 +260,7 @@
 			<artifactId>mybatis-paginator</artifactId>
 			<version>1.2.15</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.github.jsqlparser</groupId>
 			<artifactId>jsqlparser</artifactId>
