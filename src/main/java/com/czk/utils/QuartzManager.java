@@ -1,21 +1,23 @@
 package com.czk.utils;
 
+import com.czk.service.UserService;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
-import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
+@Component
 public class QuartzManager {
 
-    private static SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
     /**
      * @Description: 添加一个定时任务
@@ -28,10 +30,9 @@ public class QuartzManager {
      * @param cron   时间设置，参考quartz说明文档
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static void addJob(String jobName, String jobGroupName,
+    public static void addJob(Scheduler sched,String jobName, String jobGroupName,
                               String triggerName, String triggerGroupName, Class jobClass, String cron) {
         try {
-            Scheduler sched = schedulerFactory.getScheduler();
             // 任务名，任务组，任务执行类
             JobDetail jobDetail= JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName).build();
 
@@ -66,10 +67,9 @@ public class QuartzManager {
      * @param triggerGroupName 触发器组名
      * @param cron   时间设置，参考quartz说明文档
      */
-    public static void modifyJobTime(String jobName,
+    public static void modifyJobTime(Scheduler sched,String jobName,
                                      String jobGroupName, String triggerName, String triggerGroupName, String cron) {
         try {
-            Scheduler sched = schedulerFactory.getScheduler();
             TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroupName);
             CronTrigger trigger = (CronTrigger) sched.getTrigger(triggerKey);
             if (trigger == null) {
@@ -112,10 +112,9 @@ public class QuartzManager {
      * @param triggerName
      * @param triggerGroupName
      */
-    public static void removeJob(String jobName, String jobGroupName,
+    public static void removeJob(Scheduler sched,String jobName, String jobGroupName,
                                  String triggerName, String triggerGroupName) {
         try {
-            Scheduler sched = schedulerFactory.getScheduler();
 
             TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroupName);
 
@@ -130,9 +129,8 @@ public class QuartzManager {
     /**
      * @Description:启动所有定时任务
      */
-    public static void startJobs() {
+    public static void startJobs(Scheduler sched) {
         try {
-            Scheduler sched = schedulerFactory.getScheduler();
             sched.start();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -142,9 +140,8 @@ public class QuartzManager {
     /**
      * @Description:关闭所有定时任务
      */
-    public static void shutdownJobs() {
+    public static void shutdownJobs(Scheduler sched) {
         try {
-            Scheduler sched = schedulerFactory.getScheduler();
             if (!sched.isShutdown()) {
                 sched.shutdown();
             }
