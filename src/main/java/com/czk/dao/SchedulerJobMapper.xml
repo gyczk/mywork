@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czk.dao.SchedulerJobMapper" >
+  <resultMap id="BaseResultMap" type="com.czk.domain.SchedulerJob" >
+    <id column="jobId" property="jobId" jdbcType="BIGINT" />
+    <result column="jobName" property="jobName" jdbcType="VARCHAR" />
+    <result column="jobGroup" property="jobGroup" jdbcType="VARCHAR" />
+    <result column="jobStatus" property="jobStatus" jdbcType="CHAR" />
+    <result column="cronExpression" property="cronExpression" jdbcType="VARCHAR" />
+    <result column="quartzClass" property="quartzClass" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    jobId, jobName, jobGroup, jobStatus, cronExpression, quartzClass, description
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.czk.domain.SchedulerJobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from scheduler_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from scheduler_job
+    where jobId = #{jobId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from scheduler_job
+    where jobId = #{jobId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.czk.domain.SchedulerJobExample" >
+    delete from scheduler_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.czk.domain.SchedulerJob" >
+    insert into scheduler_job (jobId, jobName, jobGroup, 
+      jobStatus, cronExpression, quartzClass, 
+      description)
+    values (#{jobId,jdbcType=BIGINT}, #{jobName,jdbcType=VARCHAR}, #{jobGroup,jdbcType=VARCHAR}, 
+      #{jobStatus,jdbcType=CHAR}, #{cronExpression,jdbcType=VARCHAR}, #{quartzClass,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.czk.domain.SchedulerJob" >
+    insert into scheduler_job
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jobId != null" >
+        jobId,
+      </if>
+      <if test="jobName != null" >
+        jobName,
+      </if>
+      <if test="jobGroup != null" >
+        jobGroup,
+      </if>
+      <if test="jobStatus != null" >
+        jobStatus,
+      </if>
+      <if test="cronExpression != null" >
+        cronExpression,
+      </if>
+      <if test="quartzClass != null" >
+        quartzClass,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jobId != null" >
+        #{jobId,jdbcType=BIGINT},
+      </if>
+      <if test="jobName != null" >
+        #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null" >
+        #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="jobStatus != null" >
+        #{jobStatus,jdbcType=CHAR},
+      </if>
+      <if test="cronExpression != null" >
+        #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="quartzClass != null" >
+        #{quartzClass,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.czk.domain.SchedulerJobExample" resultType="java.lang.Integer" >
+    select count(*) from scheduler_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update scheduler_job
+    <set >
+      <if test="record.jobId != null" >
+        jobId = #{record.jobId,jdbcType=BIGINT},
+      </if>
+      <if test="record.jobName != null" >
+        jobName = #{record.jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobGroup != null" >
+        jobGroup = #{record.jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobStatus != null" >
+        jobStatus = #{record.jobStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.cronExpression != null" >
+        cronExpression = #{record.cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quartzClass != null" >
+        quartzClass = #{record.quartzClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update scheduler_job
+    set jobId = #{record.jobId,jdbcType=BIGINT},
+      jobName = #{record.jobName,jdbcType=VARCHAR},
+      jobGroup = #{record.jobGroup,jdbcType=VARCHAR},
+      jobStatus = #{record.jobStatus,jdbcType=CHAR},
+      cronExpression = #{record.cronExpression,jdbcType=VARCHAR},
+      quartzClass = #{record.quartzClass,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.czk.domain.SchedulerJob" >
+    update scheduler_job
+    <set >
+      <if test="jobName != null" >
+        jobName = #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null" >
+        jobGroup = #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="jobStatus != null" >
+        jobStatus = #{jobStatus,jdbcType=CHAR},
+      </if>
+      <if test="cronExpression != null" >
+        cronExpression = #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="quartzClass != null" >
+        quartzClass = #{quartzClass,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where jobId = #{jobId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.czk.domain.SchedulerJob" >
+    update scheduler_job
+    set jobName = #{jobName,jdbcType=VARCHAR},
+      jobGroup = #{jobGroup,jdbcType=VARCHAR},
+      jobStatus = #{jobStatus,jdbcType=CHAR},
+      cronExpression = #{cronExpression,jdbcType=VARCHAR},
+      quartzClass = #{quartzClass,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR}
+    where jobId = #{jobId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getSchedulerListByCondition" parameterType="com.czk.domain.SchedulerJob" resultMap="BaseResultMap">
+    select * from scheduler_job
+    <where>
+      <if test="jobName != null">
+        and jobName like concat('%',#{jobName},'%')
+      </if>
+
+    </where>
+  </select>
+
+</mapper>

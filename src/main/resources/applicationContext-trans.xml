@@ -48,7 +48,7 @@
     </websocket:handlers>
 
     <bean id="myHandler" class="com.czk.websocket.MyHandler"/>
-	
-	
+
+
 	
 </beans>
