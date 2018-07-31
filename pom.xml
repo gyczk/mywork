@@ -314,6 +314,10 @@
 					<port>8081</port>
 					<charset>${project.build.sourceEncoding}</charset>
 					<server>tomcat7</server>
+					<!--<url>http://192.168.43.53:8080/manager/text</url>
+					<username>tomcat</username>
+					<password>tomcat</password>-->
+
 				</configuration>
 			</plugin>
 
