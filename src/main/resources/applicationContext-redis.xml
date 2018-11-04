@@ -9,16 +9,16 @@
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+<!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath:redis.properties</value>
             </list>
         </property>
-    </bean>
-
+    </bean>-->
+    <context:property-placeholder  location="classpath:redis.properties" ignore-unresolvable="true"/>
     <!-- 配置 JedisPoolConfig 实例 -->
-    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <property name="maxTotal" value="${redis.maxActive}"/>
         <property name="maxWaitMillis" value="${redis.maxWait}"/>
@@ -31,12 +31,18 @@
         <property name="port" value="${redis.port}"/>
         <property name="password" value="${redis.pass}"/>
         <property name="database" value="${redis.dbIndex}"/>
-        <property name="poolConfig" ref="poolConfig"/>
+        <property name="poolConfig" ref="jedisPoolConfig"/>
     </bean>
 
     <!-- 配置RedisTemplate -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+        </property>
     </bean>
 
     <!-- 配置RedisCacheManager -->
@@ -46,7 +52,7 @@
     </bean>
 
     <!-- 配置RedisCacheConfig -->
-    <bean id="redisCacheConfig" class="com.sxd.util.RedisCacheConfig">
+    <bean id="redisCacheConfig" class="com.czk.utils.RedisCacheConfig">
         <constructor-arg ref="jedisConnectionFactory"/>
         <constructor-arg ref="redisTemplate"/>
         <constructor-arg ref="redisCacheManager"/>

@@ -4,6 +4,7 @@ import com.czk.domain.SysMenu;
 import com.czk.service.SysMenuService;
 import com.czk.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class SysMenuAction {
         return "menu/add";
     }
     @GetMapping("/edit_page/{id}")
+    @Cacheable(value="db1",key="zidiyi")
     public String edit_page(@PathVariable("id")Long id, Model model){
         SysMenu sysMenu = sysMenuService.getMenuById(id);
         Long pid = sysMenu.getParentId();
