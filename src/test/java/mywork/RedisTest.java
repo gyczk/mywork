@@ -1,5 +1,6 @@
 package mywork;
 
+import com.czk.domain.SysMenu;
 import com.czk.domain.SysUser;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +25,13 @@ public class RedisTest {
         SysUser user = new SysUser();
         user.setName("hisawadika");
         ValueOperations<String, SysUser> valueops = redisTemplate.opsForValue();
-        valueops.set("1233",user);
+        valueops.set("123",user);
     }
 
     @Test
     public void test2(){
-        ValueOperations<String, SysUser> valueops = redisTemplate.opsForValue();
-        System.out.println(valueops.get("123").getName());
+        ValueOperations<String, SysMenu> valueops = redisTemplate.opsForValue();
+        System.out.println(valueops.get("zidiyi").getName());
     }
 
     @Test
