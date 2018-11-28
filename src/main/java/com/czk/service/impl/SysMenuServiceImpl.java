@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.czk.service.SysRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.czk.dao.SysMenuMapper;
@@ -87,6 +88,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
+	@Cacheable(value="menu",key="'menuId:'.concat(#id)")
 	public SysMenu getMenuById(Long id) {
 		return sysMenuMapper.selectByPrimaryKey(id);
 	}

@@ -41,7 +41,6 @@ public class SysMenuAction {
         return "menu/add";
     }
     @GetMapping("/edit_page/{id}")
-    @Cacheable(value="db1",key="zidiyi")
     public String edit_page(@PathVariable("id")Long id, Model model){
         SysMenu sysMenu = sysMenuService.getMenuById(id);
         Long pid = sysMenu.getParentId();
