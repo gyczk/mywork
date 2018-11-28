@@ -1,10 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>添加blog</title>
+
+    <script type="text/javascript" src="../../../js/jquery.min.js"
+            th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript"
+            src="../../../bootstrap/js/bootstrap.min.js"
+            th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../../../js/layer/layer.js"
+            th:src="@{/js/layer/layer.js}"></script>
+    <script type="text/javascript" src="../../../js/jquery.validate.min.js"
+            th:src="@{/js/jquery.validate.min.js}"></script>
+    <script type="text/javascript" src="../../../js/wangEditor.min.js"
+            th:src="@{/js/wangEditor.min.js}"></script>
+    <script type="text/javascript" src="../../../js/messages_zh.min.js"
+            th:src="@{/js/messages_zh.min.js}"></script>
+    <script type="text/javascript" src="../../../js/bootstrap-switch.js"
+            th:src="@{/js/bootstrap-switch.js}"></script>
+    <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.min.css"
+          th:href="@{/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="../../../css/font-awesome.css"
+          th:href="@{/css/font-awesome.css}" />
+    <link rel="stylesheet" href="../../../css/bootstrap-switch.css"
+          th:href="@{/css/bootstrap-switch.css}" />
+
+    <script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>
+                发布文章
+            </h4>
+        </div>
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="control-label col-sm-1">标题：</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ">
+                </div>
+
+                <label class="control-label col-sm-1">作者：</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-1">内容：</label>
+                <div class="col-sm-11" id="editor" >
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-1">类型：</label>
+                <div class="col-sm-11"  >
+                    <input type="text" class="form-control ">
+                </div>
+            </div>
+            <div class="form-group  ">
+                <label class="control-label col-sm-1 col-sm-offset-2">开启评论：</label>
+                <div class="controls  col-sm-2"  >
+                    <div class="switch " >
+                        <input  type="checkbox" />
+                    </div>
+                </div>
+                <label class="control-label col-sm-1">允许订阅：</label>
+                <div class="controls col-sm-2"  >
+                    <div class="switch " >
+                        <input  type="checkbox" />
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+
+
+
 
 </body>
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+
+    editor.create();
+
+    $('[type="checkbox"]').bootstrapSwitch({
+        onText:"开",
+        offText:"关",
+        onColor:"success",
+        offColor:"danger",
+        size:"mini",
+        handleWidth:"3",
+        onSwitchChange:function(event,state){
+            if(state==true){
+
+            }else{
+
+            }
+        }
+
+    })
+
+
+</script>
 </html>
