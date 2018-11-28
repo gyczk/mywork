@@ -88,7 +88,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	@Cacheable(value="menu",key="'menuId:'.concat(#id)")
+	@Cacheable(value="db1",key="'menuId:'.concat(#id)")
 	public SysMenu getMenuById(Long id) {
 		return sysMenuMapper.selectByPrimaryKey(id);
 	}
